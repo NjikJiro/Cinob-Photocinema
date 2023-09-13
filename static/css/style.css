@@ -25,3 +25,17 @@ body{
     width: 50px;
     border-radius: 100%;
 }
+.lengkap{
+    color: white;
+    text-decoration: none;
+}
+ul{
+    list-style: none;
+}
+.footer-list>li>a{
+    color: white;
+    text-decoration: none;
+}
+.bg-blacki{
+    background-color: rgb(11, 11, 11);
+}

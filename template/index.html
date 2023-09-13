@@ -9,11 +9,17 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+    />
     <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../static/css/style.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <title>Cinob Photocinema</title>
   </head>
   <body>
+    <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark">
       <div class="container">
         <a href="#" class="navbar-brand fw-bold">
@@ -59,13 +65,13 @@
       class="banner-image w-100 vh-100 d-flex justify-content-center align-items-center"
     >
       <div class="content text-center">
-        <p class="text-white fs-3">Capture Your Moments With</p>
+        <p class="text-white fs-4">Capture Your Moments With</p>
         <img src="../static/img/logo.png" width="300" alt="" />
       </div>
     </div>
 
     <!-- About -->
-    <div class="container">
+    <div class="container" data-aos="fade-up" data-aos-duration="700">
       <h3 class="mt-5 fw-semibold">Tentang Kami</h3>
       <p
         style="text-indent: 0.5in; text-align: justify"
@@ -79,7 +85,7 @@
       </p>
       <p
         style="text-indent: 0.5in; text-align: justify"
-        class="mt-4 d-grid gap-5"
+        class="mt-4 mb-3 d-grid gap-5"
       >
         CINOB photo cinema sudah bekerjasama dengan vendors wedding pekanbaru
         yang tetap konsisten dalam dunia wedding dan juga membuka keterampilan
@@ -88,6 +94,223 @@
       </p>
     </div>
 
-    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Services -->
+    <div class="container">
+      <h3
+        class="mt-5 mb-4 fw-semibold"
+        data-aos="fade-up"
+        data-aos-duration="700"
+      >
+        Layanan
+      </h3>
+      <div class="row">
+        <div class="col-md-4 mb-4" data-aos="flip-left" data-aos-duration="700">
+          <img
+            class="img-fluid"
+            src="../static/img/Foto 1.png"
+            alt=""
+            height="100%"
+          />
+        </div>
+        <div
+          class="col-md-8 mb-4"
+          data-aos="flip-right"
+          data-aos-duration="700"
+        >
+          <img
+            class="img-fluid"
+            src="../static/img/Foto 2.png"
+            alt=""
+            height="100%"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 mb-4" data-aos="flip-left" data-aos-duration="700">
+          <img
+            class="img-fluid"
+            src="../static/img/Foto 3.png"
+            alt=""
+            height="100%"
+          />
+        </div>
+        <div
+          class="col-md-4 mb-4"
+          data-aos="flip-right"
+          data-aos-duration="700"
+        >
+          <img
+            class="img-fluid"
+            src="../static/img/Foto 4.png"
+            alt=""
+            height="100%"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Openning Hours -->
+    <div class="parallax1 mt-4 mb-3" style="padding: 10%">
+      <h1
+        class="text-white text-center fs-1 fw-bold paratext"
+        data-aos="fade-up"
+        data-aos-duration="600"
+      >
+        BUKA SETIAP HARI
+      </h1>
+      <p
+        class="text-center text-white fs-4"
+        data-aos="fade-up"
+        data-aos-duration="600"
+      >
+        Dari jam 10:00 sampai 22:00
+      </p>
+    </div>
+
+    <!-- Testimonial -->
+    <div class="container mt-5">
+      <h3 class="mt-5 fw-semibold" data-aos="fade-up" data-aos-duration="700">
+        Kata Mereka
+      </h3>
+      <div class="row mt-4">
+        <div
+          class="col-md card shadow px-3 pt-4 pb-2 mx-2 text-center"
+          data-aos="flip-left"
+          data-aos-duration="700"
+        >
+          <p class="card-text">
+            “Recomended lah Foto disini, bisa untuk prewedding, post wedding,
+            foto family. Fotografernya ramah. Gaya2 diarahin..”
+          </p>
+          <div class="mx-auto">
+            <p class="fw-medium">
+              <img
+                class="testimonial-pic me-2"
+                src="../static/img/pp1.jpeg"
+                alt=""
+              />Trevor Philips
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="col-md card shadow px-3 pt-4 pb-2 mx-2 text-center"
+          data-aos="flip-right"
+          data-aos-duration="700"
+        >
+          <p class="card-text">
+            "Foto wedding kita keren abis! Fotografernya jago banget, bisa
+            nangkep semua momen-momen penting. Puas banget sama hasilnya,
+            makasih tim fotografer!"
+          </p>
+          <div class="mx-auto">
+            <p class="fw-medium">
+              <img
+                class="testimonial-pic me-2"
+                src="../static/img/pp2.jpg"
+                alt=""
+              />Claire Pritchett
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Owners -->
+    <div class="container">
+      <h3 class="mt-5 fw-semibold" data-aos="fade-up" data-aos-duration="600">
+        Meet The Owners
+      </h3>
+      <div class="row">
+        <div class="col-md-6">
+          <p
+            style="text-indent: 0.5in; text-align: justify"
+            class="mt-4 d-grid gap-5"
+            data-aos="fade-up"
+            data-aos-duration="600"
+          >
+            Pasangan suami istri ini memulai perjalanan karir mereka sebagai
+            fotografer profesional pada tahun 2014, dan sejak saat itu, mereka
+            telah menjalani perjalanan yang mengagumkan dalam dunia fotografi.
+            Dengan tekad dan dedikasi yang luar biasa, mereka berhasil
+            mendapatkan 30 hingga 40 job wedding setiap bulannya, tak terkecuali
+            foto prewedding di berbagai kota yang berbeda, serta mengikuti trend
+            masa kini dengan menghadirkan videobooth 360 di tengah masyarakat.
+            Yang membuat mereka benar-benar istimewa adalah kemampuan mereka
+            dalam menciptakan gaya tone cinematic yang epik dalam setiap hasil
+            karya mereka, sehingga setiap momen dalam pernikahan menjadi seperti
+            sebuah kisah besar yang tak terlupakan.
+          </p>
+        </div>
+        <div class="col-md-3 text-center">
+          <img
+            class="img-fluid mb-2"
+            src="../static/img/cici.png"
+            alt=""
+            height="100%"
+            data-aos="flip-left"
+            data-aos-duration="700"
+          />
+          <a href="#" class="text-black fs-4 me-3"
+            ><i
+              class="bi bi-facebook"
+              data-aos="fade-up"
+              data-aos-duration="400"
+            ></i
+          ></a>
+          <a href="#" class="text-black fs-4 me-3"
+            ><i
+              class="bi bi-instagram"
+              data-aos="fade-up"
+              data-aos-duration="600"
+            ></i
+          ></a>
+          <a href="#" class="text-black fs-4"
+            ><i
+              class="bi bi-linkedin"
+              data-aos="fade-up"
+              data-aos-duration="800"
+            ></i
+          ></a>
+        </div>
+        <div class="col-md-3 text-center">
+          <img
+            class="img-fluid mb-2"
+            src="../static/img/rinof.png"
+            alt=""
+            height="100%"
+            data-aos="flip-right"
+            data-aos-duration="700"
+          />
+          <a href="#" class="text-black fs-4 me-3"
+            ><i
+              class="bi bi-facebook"
+              data-aos="fade-up"
+              data-aos-duration="400"
+            ></i
+          ></a>
+          <a href="#" class="text-black fs-4 me-3"
+            ><i
+              class="bi bi-instagram"
+              data-aos="fade-up"
+              data-aos-duration="600"
+            ></i
+          ></a>
+          <a href="#" class="text-black fs-4"
+            ><i
+              class="bi bi-linkedin"
+              data-aos="fade-up"
+              data-aos-duration="800"
+            ></i
+          ></a>
+        </div>
+      </div>
+    </div>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/my.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
   </body>
 </html>

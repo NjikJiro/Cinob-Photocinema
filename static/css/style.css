@@ -1,8 +1,27 @@
 body{
     font-family: 'Poppins', sans-serif;
 }
+.warnavbar{
+    background-color: black;
+}
 .banner-image {
-    background-image: url("../img/banner-img.jpg");
+    background-image:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../img/banner-img.jpg');
     background-size: cover;
     background-position: center;
+}
+.parallax1 {
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../img/banner-img.jpg');
+    min-height: 400px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.testimonial-pic{
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
 }

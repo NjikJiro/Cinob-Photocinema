@@ -1,0 +1,8 @@
+body{
+    font-family: 'Poppins', sans-serif;
+}
+.banner-image {
+    background-image: url("../img/banner-img.jpg");
+    background-size: cover;
+    background-position: center;
+}

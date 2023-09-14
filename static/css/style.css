@@ -78,3 +78,31 @@ ul{
     padding-right: 5px;
     border-radius: 100%;
 } */
+
+.login-page{
+    min-height: 100vh;
+    background-color: black;
+}
+.banner-image-login {
+    background-image:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../img/banner.png');
+    background-size: cover;
+    background-position: center;
+}
+.btn-cinob{
+    background-color: white;
+    color: black;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.btn-cinob:hover{
+    border: 1px solid white;
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.dekl{
+    color: #545454;
+}

@@ -68,20 +68,39 @@
       }
     </script>
   </head>
-  <body>
-    <h1>halaman login</h1>
-    <section>
-      <div>
-        <label for="">username</label>
-        <input type="text" id="input-username" />
+  <body style="background-color: black;">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 px-5 py-5 login-page">
+          <div class="container">
+            <div class="text-center mt-4">
+              <img src="../static/img/logo.png" alt="" height="120px">
+            </div>
+            <section>
+              <div class="input-group my-4">
+                <span class="input-group-text"><i class="bi bi-person-circle fs-3"></i></span>
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="input-username" placeholder="Username">
+                  <label for="input-username">Username</label>
+                </div>
+              </div>
+              <div class="input-group mb-4">
+                <span class="input-group-text"><i class="bi bi-lock-fill fs-3"></i></span>
+                <div class="form-floating">
+                  <input type="password" class="form-control" id="input-password" placeholder="Password">
+                  <label for="input-password">Password</label>
+                </div>
+              </div>
+              <p class="dekl">*Login page ini khusus admin</p>
+              <div class="d-grid gap-2 mt-4">
+                <button class="btn btn-cinob" onclick="sign_in()"><b>LOGIN</b></button>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="col d-none d-md-flex banner-image-login"></div>
       </div>
-      <div>
-        <label for="">username</label>
-        <input type="password" id="input-password" />
-      </div>
-      <div>
-        <button onclick="sign_in()">simpan</button>
-      </div>
-    </section>
+    </div>
+    
   </body>
 </html>

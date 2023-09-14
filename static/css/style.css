@@ -20,6 +20,9 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
 }
+.testimonial-card{
+    width: 95%;
+}
 .testimonial-pic{
     height: 50px;
     width: 50px;

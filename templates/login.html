@@ -3,6 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- link jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <!-- akhir link jquery -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,14 +26,62 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="../static/img/cinob.png" />
     <title>Login Cinob Photocinema</title>
+    <script>
+      function sign_in() {
+        let username = $("#input-username").val();
+        let password = $("#input-password").val();
+
+        // if (username === "") {
+        //   $("#help-id-login").text("Please input your id.");
+        //   $("#input-username").focus();
+        //   return;
+        // } else {
+        //   $("#input-id-login").text("");
+        // }
+
+        // if (password === "") {
+        //   $("#help-password-login").text("Please input your password.");
+        //   $("#input-password").focus();
+        //   return;
+        // } else {
+        //   $("#help-password-login").text("");
+        // }
+
+        $.ajax({
+          type: "POST",
+          url: "/login_save",
+          data: {
+            username_give: username,
+            password_give: password,
+          },
+          success: function (response) {
+            if (response["result"] === "success") {
+              let token = response["token"];
+              $.cookie("mytoken", token, { path: "/adminpanel" });
+              alert("Login Berhasil!");
+              window.location.href = "/adminpanel";
+            } else {
+              alert(response["msg"]);
+            }
+          },
+        });
+      }
+    </script>
   </head>
   <body>
     <h1>halaman login</h1>
-    <form action="">
+    <section>
       <div>
         <label for="">username</label>
-        <input type="text" id="" />
+        <input type="text" id="input-username" />
       </div>
-    </form>
+      <div>
+        <label for="">username</label>
+        <input type="password" id="input-password" />
+      </div>
+      <div>
+        <button onclick="sign_in()">simpan</button>
+      </div>
+    </section>
   </body>
 </html>

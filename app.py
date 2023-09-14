@@ -1,4 +1,3 @@
-import shelve
 from flask import (
     Flask,
     render_template,
@@ -10,7 +9,7 @@ from flask import (
 )
 from pymongo import MongoClient
 import jwt
-import datetime
+from datetime import datetime, timedelta
 import hashlib
 import os
 
@@ -61,14 +60,15 @@ def faq():
 @app.route('/adminpanel', methods=["GET"])
 def dashboard():
     token_receive = request.cookies.get(TOKEN_KEY)
-    # try:
-    #     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-    #     user_info = db.user.find_one({"id": payload["id"]})
-    #     return render_template("adminpanel.html", nickname=user_info["nick"])
-    # except jwt.ExpiredSignatureError:
-    #     return redirect(url_for("login", msg="Sesi login kamu telah kadaluwarsa"))
-    # except jwt.exceptions.DecodeError:
-    #     return redirect(url_for("login", msg="Sepertinya terjadi kesalahan"))
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({'username': payload.get('id')})
+        print(user_info)
+        return render_template("adminpanel.html", user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="Sesi login kamu telah kadaluwarsa"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="Sepertinya terjadi kesalahan"))
 
 
 @app.route('/posting', methods=['POST'])
@@ -86,9 +86,27 @@ def posting():
     #     return redirect(url_for('home'))
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    test = ""
+@app.route('/login_save', methods=['POST'])
+def login_save():
+    username_receive = request.form['username_give']
+    password_receive = request.form['password_give']
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    result = db.users.find_one({
+        'username': username_receive,
+        'password': pw_hash
+    })
+    if result:
+        payload = {
+            'id': username_receive,
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 1),
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        return jsonify({'result': 'success', 'token': token})
+    else:
+        return jsonify({
+            "result": "fail",
+            "msg": "Kami tidak dapat menemukan pengguna dengan kombinasi id/kata sandi tersebut",
+        })
 
 
 if __name__ == '__main__':

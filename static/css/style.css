@@ -20,9 +20,6 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
 }
-.testimonial-card{
-    width: 95%;
-}
 .testimonial-pic{
     height: 50px;
     width: 50px;
@@ -41,4 +38,24 @@ ul{
 }
 .bg-blacki{
     background-color: rgb(11, 11, 11);
+}
+
+/* Hover */
+.testimonial-card:hover{
+    background-color: #f8f8f8;
+}
+.bi-facebook:hover{
+    color:rgb(24, 119, 242);
+}
+.bi-instagram:hover{
+    color: #bc2a8d;
+}
+.bi-linkedin:hover{
+    color: #0072b1;
+}
+.bi-youtube:hover{
+    color: #f02e27;
+}
+.ragdoll-tag{
+    cursor: pointer;
 }

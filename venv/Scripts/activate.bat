@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=D:\Pemograman\Project Pemograman\daftar kegiatan\venv
+set VIRTUAL_ENV=D:\learningX_magang\project1\Cinob-Photocinema\venv
 
 if not defined PROMPT set PROMPT=$P$G
 

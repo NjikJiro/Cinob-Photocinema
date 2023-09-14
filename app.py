@@ -1,56 +1,94 @@
+import shelve
 from flask import (
     Flask,
     render_template,
     jsonify,
     request,
+    session,
     redirect,
     url_for
 )
 from pymongo import MongoClient
+import jwt
+import datetime
+import hashlib
 import os
 
-
 app = Flask(__name__)
+
+SECRET_KEY = 'CINEMA'
 
 client = MongoClient(
     'mongodb+srv://test:sparta@cluster0.w8mhvbo.mongodb.net/?retryWrites=true&w=majority')
 db = client.cinobphotocinema
 
+TOKEN_KEY = 'mytoken'
 
-@app.route('/')
+
+# start halaman user
+
+
+@app.route('/', methods=['GET'])
 def home():
     return render_template('index.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET'])
+def login():
+    msg = request.args.get('msg')
+    return render_template('login.html', msg=msg)
+
+
+@app.route('/contact', methods=['GET'])
+def contact():
+    return render_template('contact.html')
+
+
+@app.route('/gallery', methods=['GET'])
+def gallery():
+    return render_template('gallery.html')
+
+
+@app.route('/faq', methods=['GET'])
+def faq():
+    return render_template('faq.html')
+# akhir halaman user
+
+
+# start dashboard admin
+
+
+@app.route('/adminpanel', methods=["GET"])
+def dashboard():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    # try:
+    #     payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+    #     user_info = db.user.find_one({"id": payload["id"]})
+    #     return render_template("adminpanel.html", nickname=user_info["nick"])
+    # except jwt.ExpiredSignatureError:
+    #     return redirect(url_for("login", msg="Sesi login kamu telah kadaluwarsa"))
+    # except jwt.exceptions.DecodeError:
+    #     return redirect(url_for("login", msg="Sepertinya terjadi kesalahan"))
+
+
+@app.route('/posting', methods=['POST'])
+def posting():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    # try:
+    #     payload = jwt.decode(
+    #         token_receive,
+    #         SECRET_KEY,
+    #         algorithms=['HS256']
+    #     )
+    #     user_info = db.users.find_one({'username': payload.get('id')})
+    #     # buat kode input data disini
+    # except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+    #     return redirect(url_for('home'))
+
+
+@app.route('/login', methods=['POST'])
 def login():
     test = ""
-
-
-@app.route('/gallery')
-def gallery():
-    card = list(db.card.find({}, {'_id': False}))
-    return jsonify({'card': card})
-
-
-@app.route('/adminpanel', methods=["POST"])
-def save_card():
-    title_receive = request.form.get('title_give')
-    file = request.files['file_give']
-
-    directory = f'static/image/{title_receive}'
-    os.makedirs(directory, exist_ok=True)
-
-    extension = file.filename.split('.')[1]
-    filename = f'{directory}/{title_receive}.{extension}'
-    file.save(filename)
-
-    doc = {
-        'title': title_receive,
-        'file': filename,
-    }
-    db.produk.insert_one(doc)
-    return jsonify({'pesan': 'data telah ditambahkan'})
 
 
 if __name__ == '__main__':

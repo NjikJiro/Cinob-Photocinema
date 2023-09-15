@@ -106,3 +106,21 @@ ul{
 .dekl{
     color: #545454;
 }
+
+/* Admin Panel */
+.logout-button-cinob{
+    background-color: black;
+    border: 1px solid white;
+    color: white;
+}
+.logout-button-cinob:hover{
+    
+    color: black;
+    background-color: white;
+}
+.data-foto{
+    max-height: 200px;
+}
+.footnote{
+    font-size: small;
+}

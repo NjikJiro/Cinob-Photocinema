@@ -17,9 +17,160 @@
     <link rel="stylesheet" href="../static/css/style.css" />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="../static/img/cinob.png" />
-    <title>Dashboard Cinob Photocinema</title>
+    <title>Dashboard Admin | Cinob Photocinema</title>
   </head>
-  <body>
-    <h1>Selamat datang, {{ user_info.username }}</h1>
+  <body style="background-color: rgb(245, 245, 245)">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark warnavbar">
+      <div class="container">
+        <a href="#" class="navbar-brand fw-bold">
+          <img
+            src="../static/img/logo.png"
+            alt="Logo"
+            width="100"
+            height="auto"
+            class="d-inline-block align-text-top"
+        /></a>
+        <div class="justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <!-- Tombol Log Out -->
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link logout-button-cinob btn px-4 rounded-pill"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Greeting Message -->
+    <div class="container bg-white mt-3 py-4 shadow rounded">
+      <div class="row">
+        <div class="col">
+          <h4 class="ms-3">Selamat datang, {{ user_info.username }}</h4>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabel Data -->
+    <div class="container bg-white mt-3 mb-5 py-4 px-3 shadow rounded">
+      <div class="row mt-3">
+        <div class="col-md-10"></div>
+        <div class="col-md-2">
+          <!-- Tombol untuk mengaktifkan modal -->
+          <button
+            type="button"
+            class="btn btn-dark"
+            data-bs-toggle="modal"
+            data-bs-target="#tambahdataModal"
+          >
+            + Tambah Data
+          </button>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <!-- Tabel Data -->
+          <table class="table text-center border mt-3">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Judul</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Pre-Wedding Sanji dan Nami</td>
+                <td>
+                  <img
+                    src="../static/img/A5.jpeg"
+                    alt=""
+                    class="img-fluid data-foto"
+                  />
+                </td>
+                <td>
+                  <button class="btn btn-danger">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Wisuda Nico Robin</td>
+                <td>
+                  <img
+                    src="../static/img/I1.jpeg"
+                    alt=""
+                    class="img-fluid data-foto"
+                  />
+                </td>
+                <td>
+                  <button class="btn btn-danger">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="tambahdataModal"
+      tabindex="-1"
+      aria-labelledby="tambahdataModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="tambahdataModal">Tambah Data</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Input Judul -->
+            <div class="mb-3">
+              <label for="judul" class="form-label">Judul</label>
+              <input
+                type="text"
+                class="form-control"
+                id="judul"
+                autocomplete="off"
+              />
+            </div>
+
+            <!-- Input Gambar -->
+            <div class="mb-3">
+              <label for="foto" class="form-label">Foto</label>
+              <input class="form-control" type="file" id="foto" />
+            </div>
+
+            <p class="text-body-tertiary footnote">
+              *Hanya bisa menginput satu file dalam satu waktu
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-dark">Simpan Perubahan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script src="../static/js/bootstrap.min.js"></script>
   </body>
 </html>

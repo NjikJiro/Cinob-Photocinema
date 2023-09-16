@@ -82,16 +82,45 @@ def dashboard():
 @app.route('/posting', methods=['POST'])
 def posting():
     token_receive = request.cookies.get(TOKEN_KEY)
-    # try:
-    #     payload = jwt.decode(
-    #         token_receive,
-    #         SECRET_KEY,
-    #         algorithms=['HS256']
-    #     )
-    #     user_info = db.users.find_one({'username': payload.get('id')})
-    #     # buat kode input data disini
-    # except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-    #     return redirect(url_for('home'))
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+        user_info = db.users.find_one({'username': payload.get('id')})
+        # buat kode input data disini
+        title_receive = request.form.get('title_give')
+        file = request.files['file_give']
+
+        # Mencari nomor folder terakhir
+        last_folder_number = list(
+            db.product.find().sort([('folder', -1)]).limit(1))
+        if len(last_folder_number) == 0 or 'folder' not in last_folder_number[0]:
+            detail = "detail 1"
+        else:
+            last_number = int(
+                last_folder_number[0]['folder'].replace('detail', ''))
+            detail = f"detail {last_number + 1}"
+
+        directory = f'static/img/{detail}'
+        os.makedirs(directory, exist_ok=True)
+        # akhir kode cari folder
+
+        extension = file.filename.split('.')[1]
+        filename = f'{directory}/{title_receive}.{extension}'
+        file.save(filename)
+
+        doc = {
+            'username': user_info.get('username'),
+            'title': title_receive,
+            'file': filename,
+            'folder': detail,
+        }
+        db.product.insert_one(doc)
+        return jsonify({'msg': 'data telah ditambahkan'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('dashboard'))
 
 
 @app.route('/login_save', methods=['POST'])

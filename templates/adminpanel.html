@@ -157,7 +157,7 @@
               <input
                 type="text"
                 class="form-control"
-                id="judul"
+                id="input-title"
                 autocomplete="off"
               />
             </div>
@@ -165,7 +165,7 @@
             <!-- Input Gambar -->
             <div class="mb-3">
               <label for="foto" class="form-label">Foto</label>
-              <input class="form-control" type="file" id="foto" />
+              <input class="form-control" type="file" id="input-file" />
             </div>
 
             <p class="text-body-tertiary footnote">
@@ -173,7 +173,9 @@
             </p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-dark">Simpan Perubahan</button>
+            <button type="button" class="btn btn-dark" onclick="posting()">
+              Simpan Perubahan
+            </button>
           </div>
         </div>
       </div>

@@ -2,8 +2,10 @@ function sign_in() {
   let username = $("#input-username").val();
   let password = $("#input-password").val();
 
-  //kode validasi
-
+  if (!username || !password) {
+    alert("Mohon lengkapi username dan password.");
+    return;
+  }
   $.ajax({
     type: "POST",
     url: "/login_save",
@@ -33,6 +35,22 @@ function sign_out() {
 function posting() {
   let title = $("#input-title").val().trim();
   let file = $("#input-file").prop("files")[0];
+
+  if (!title || !file) {
+    alert("Mohon lengkapi data dengan benar");
+    return;
+  }
+
+  // Validasi tipe file (hanya menerima gambar)
+  if (!file.type.startsWith("image/") || file.type === "image/gif") {
+    alert("Mohon pilih file gambar!");
+    return;
+  }
+  // Validasi kapasitas file (maksimum 2 megabyte)
+  if (file.size > 2 * 1024 * 1024) {
+    alert("Ukuran file terlalu besar, maksimum 2 megabyte diperbolehkan");
+    return;
+  }
 
   // membuat objek formData
   form_data = new FormData();

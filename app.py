@@ -19,7 +19,7 @@ app = Flask(__name__)
 SECRET_KEY = 'CINEMA'
 
 client = MongoClient(
-    'mongodb+srv://test:sparta@cluster0.w8mhvbo.mongodb.net/?retryWrites=true&w=majority')
+    'mongodb+srv://ragdoll:smkm@cluster0.emf0knj.mongodb.net/?retryWrites=true&w=majority')
 db = client.cinobphotocinema
 
 TOKEN_KEY = 'mytoken'
@@ -47,6 +47,7 @@ def gallery():
 def gallery2():
     return render_template('gallery2.html')
 
+
 @app.route('/faq', methods=['GET'])
 def faq():
     return render_template('faq.html')
@@ -58,47 +59,65 @@ def faq():
 def detailA():
     return render_template('detailA.html')
 
-#B
+# B
+
+
 @app.route('/detailB', methods=['GET'])
 def detailB():
     return render_template('detailB.html')
 
-#C
+# C
+
+
 @app.route('/detailC', methods=['GET'])
 def detailC():
     return render_template('detailC.html')
 
-#D
+# D
+
+
 @app.route('/detailD', methods=['GET'])
 def detailD():
     return render_template('detailD.html')
 
-#E
+# E
+
+
 @app.route('/detailE', methods=['GET'])
 def detailE():
     return render_template('detailE.html')
 
-#F
+# F
+
+
 @app.route('/detailF', methods=['GET'])
 def detailF():
     return render_template('detailF.html')
 
-#G
+# G
+
+
 @app.route('/detailG', methods=['GET'])
 def detailG():
     return render_template('detailG.html')
 
-#H
+# H
+
+
 @app.route('/detailH', methods=['GET'])
 def detailH():
     return render_template('detailH.html')
 
-#I
+# I
+
+
 @app.route('/detailI', methods=['GET'])
 def detailI():
     return render_template('detailI.html')
 
-#J
+# J
+
+
 @app.route('/detailJ', methods=['GET'])
 def detailJ():
     return render_template('detailJ.html')

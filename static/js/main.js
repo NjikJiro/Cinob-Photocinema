@@ -116,3 +116,27 @@ function deletePost(num) {
     },
   });
 }
+
+function gallery() {
+  $.ajax({
+    type: "GET",
+    url: "/get_posts",
+    data: {},
+    success: function (response) {
+      let card = response["card"];
+      for (let i = 0; i < card.length; i++) {
+        let file = card[i]["file"];
+        let temp_html = `
+        <div class="col-md-4 mb-4 aos-init aos-animate" data-aos="flip-down">
+          <a href="/detailG">
+            <div class="img-area">
+              <img class="img-fluid" src="../${file}" alt="" height="100%">
+            </div>
+          </a>
+        </div>
+      `;
+        $("#cards-box").append(temp_html);
+      }
+    },
+  });
+}

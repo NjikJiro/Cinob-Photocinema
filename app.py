@@ -32,12 +32,6 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/login', methods=['GET'])
-def login():
-    msg = request.args.get('msg')
-    return render_template('login.html', msg=msg)
-
-
 @app.route('/contact', methods=['GET'])
 def contact():
     return render_template('contact.html')
@@ -56,6 +50,21 @@ def faq():
 
 # start dashboard admin
 
+@app.route('/login', methods=['GET'])
+def login():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+        user_info = db.users.find_one({'username': payload.get('id')})
+        return redirect(url_for('dashboard', user_info=user_info))
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        msg = request.args.get('msg')
+        return render_template('login.html', msg=msg)
+
 
 @app.route('/adminpanel', methods=["GET"])
 def dashboard():
@@ -63,7 +72,6 @@ def dashboard():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({'username': payload.get('id')})
-        print(user_info)
         return render_template("adminpanel.html", user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="Sesi login kamu telah kadaluwarsa"))

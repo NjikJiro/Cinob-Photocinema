@@ -11,6 +11,7 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <!-- akhir link jquery -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,74 +27,49 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="../static/img/cinob.png" />
     <title>Login | Cinob Photocinema</title>
-    <script>
-      function sign_in() {
-        let username = $("#input-username").val();
-        let password = $("#input-password").val();
-
-        // if (username === "") {
-        //   $("#help-id-login").text("Please input your id.");
-        //   $("#input-username").focus();
-        //   return;
-        // } else {
-        //   $("#input-id-login").text("");
-        // }
-
-        // if (password === "") {
-        //   $("#help-password-login").text("Please input your password.");
-        //   $("#input-password").focus();
-        //   return;
-        // } else {
-        //   $("#help-password-login").text("");
-        // }
-
-        $.ajax({
-          type: "POST",
-          url: "/login_save",
-          data: {
-            username_give: username,
-            password_give: password,
-          },
-          success: function (response) {
-            if (response["result"] === "success") {
-              let token = response["token"];
-              $.cookie("mytoken", token, { path: "/adminpanel" });
-              alert("Login Berhasil!");
-              window.location.href = "/adminpanel";
-            } else {
-              alert(response["msg"]);
-            }
-          },
-        });
-      }
-    </script>
   </head>
-  <body style="background-color: black;">
+  <body style="background-color: black">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6 px-5 py-5 login-page">
           <div class="container">
             <div class="text-center mt-4">
-              <img src="../static/img/logo.png" alt="" height="120px">
+              <img src="../static/img/logo.png" alt="" height="120px" />
             </div>
             <section>
               <div class="input-group my-4">
-                <span class="input-group-text"><i class="bi bi-person-circle fs-3"></i></span>
+                <span class="input-group-text"
+                  ><i class="bi bi-person-circle fs-3"></i
+                ></span>
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="input-username" placeholder="Username">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="input-username"
+                    placeholder="Username"
+                  />
                   <label for="input-username">Username</label>
                 </div>
               </div>
               <div class="input-group mb-4">
-                <span class="input-group-text"><i class="bi bi-lock-fill fs-3"></i></span>
+                <span class="input-group-text"
+                  ><i class="bi bi-lock-fill fs-3"></i
+                ></span>
                 <div class="form-floating">
-                  <input type="password" class="form-control" id="input-password" placeholder="Password">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="input-password"
+                    placeholder="Password"
+                  />
                   <label for="input-password">Password</label>
                 </div>
               </div>
               <p class="dekl">*Login page ini khusus admin</p>
               <div class="d-grid gap-2 mt-4">
-                <button class="btn btn-cinob" onclick="sign_in()"><b>LOGIN</b></button>
+                <button class="btn btn-cinob" onclick="sign_in()">
+                  <b>LOGIN</b>
+                </button>
               </div>
             </section>
           </div>
@@ -101,6 +77,5 @@
         <div class="col d-none d-md-flex banner-image-login"></div>
       </div>
     </div>
-    
   </body>
 </html>

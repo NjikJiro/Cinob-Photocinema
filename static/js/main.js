@@ -52,3 +52,49 @@ function posting() {
     },
   });
 }
+
+function listing() {
+  $.ajax({
+    type: "GET",
+    url: "/get_posts",
+    data: {},
+    success: function (response) {
+      let card = response["card"];
+      for (let i = 0; i < card.length; i++) {
+        let title = card[i]["title"];
+        let file = card[i]["file"];
+        let num = card[i]["num"];
+        let temp_html = `
+          <tr>
+          <th scope="row">${i + 1}</th>
+          <td>${title}</td>
+          <td>
+            <img
+              src="../${file}"
+              class="img-fluid data-foto"
+            />
+          </td>
+          <td>
+            <button class="btn btn-danger" onclick="deletePost('${num}')">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
+          </td>
+        </tr>
+        `;
+        $("#cards-box").append(temp_html);
+      }
+    },
+  });
+}
+
+function deletePost(num) {
+  $.ajax({
+    type: "POST",
+    url: "/adminpanel/delete_post",
+    data: { num_give: num },
+    success: function (response) {
+      alert(response["msg"]);
+      window.location.reload();
+    },
+  });
+}

@@ -12,6 +12,7 @@ import jwt
 from datetime import datetime, timedelta
 import hashlib
 import os
+import shutil
 
 app = Flask(__name__)
 
@@ -66,6 +67,12 @@ def login():
         return render_template('login.html', msg=msg)
 
 
+@app.route('/get_posts', methods=['GET'])
+def get_posts():
+    card = list(db.product.find({}, {'_id': False}))
+    return jsonify({'card': card})
+
+
 @app.route('/adminpanel', methods=["GET"])
 def dashboard():
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -111,7 +118,11 @@ def posting():
         filename = f'{directory}/{title_receive}.{extension}'
         file.save(filename)
 
+        count = db.bucket.count_documents({})
+        num = count + 1
+
         doc = {
+            'num': num,
             'username': user_info.get('username'),
             'title': title_receive,
             'file': filename,
@@ -144,6 +155,28 @@ def login_save():
             "result": "fail",
             "msg": "Kami tidak dapat menemukan pengguna dengan kombinasi id/kata sandi tersebut",
         })
+
+
+@app.route('/adminpanel/delete_post', methods=['POST'])
+def delete_post():
+    num_receive = request.form['num_give']
+
+    # Temukan post yang akan dihapus
+    post = db.product.find_one({'num': int(num_receive)})
+
+    if post:
+        # Hapus folder terkait beserta isinya
+        folder_to_delete = post['folder']
+        folder_path = os.path.join('static', 'img', folder_to_delete)
+
+        if os.path.exists(folder_path):
+            shutil.rmtree(folder_path)  # Hapus folder dan isinya
+
+        # Hapus post dari database
+        db.product.delete_one({'num': int(num_receive)})
+        return jsonify({'msg': 'hapus berhasil!'})
+    else:
+        return jsonify({'msg': 'post tidak ditemukan'})
 
 
 if __name__ == '__main__':

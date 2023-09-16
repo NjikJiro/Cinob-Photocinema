@@ -27,6 +27,12 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="../static/img/cinob.png" />
     <title>Dashboard Admin | Cinob Photocinema</title>
+    <script>
+      $(document).ready(function () {
+        listing();
+        bsCustomFileInput.init(); //memanggil fungsinya dari libary
+      });
+    </script>
   </head>
   <body style="background-color: rgb(245, 245, 245)">
     <!-- Navbar -->
@@ -92,40 +98,7 @@
                 <th scope="col">Aksi</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Pre-Wedding Sanji dan Nami</td>
-                <td>
-                  <img
-                    src="../static/img/A5.jpeg"
-                    alt=""
-                    class="img-fluid data-foto"
-                  />
-                </td>
-                <td>
-                  <button class="btn btn-danger">
-                    <i class="bi bi-trash3-fill"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Wisuda Nico Robin</td>
-                <td>
-                  <img
-                    src="../static/img/I1.jpeg"
-                    alt=""
-                    class="img-fluid data-foto"
-                  />
-                </td>
-                <td>
-                  <button class="btn btn-danger">
-                    <i class="bi bi-trash3-fill"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
+            <tbody id="cards-box"></tbody>
           </table>
         </div>
       </div>

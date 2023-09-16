@@ -43,6 +43,10 @@ def gallery():
     return render_template('gallery.html')
 
 
+@app.route('/gallery2', methods=['GET'])
+def gallery2():
+    return render_template('gallery2.html')
+
 @app.route('/faq', methods=['GET'])
 def faq():
     return render_template('faq.html')

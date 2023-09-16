@@ -46,6 +46,58 @@ def gallery():
 @app.route('/faq', methods=['GET'])
 def faq():
     return render_template('faq.html')
+
+
+# Halaman detail gallery
+# A
+@app.route('/detailA', methods=['GET'])
+def detailA():
+    return render_template('detailA.html')
+
+#B
+@app.route('/detailB', methods=['GET'])
+def detailB():
+    return render_template('detailB.html')
+
+#C
+@app.route('/detailC', methods=['GET'])
+def detailC():
+    return render_template('detailC.html')
+
+#D
+@app.route('/detailD', methods=['GET'])
+def detailD():
+    return render_template('detailD.html')
+
+#E
+@app.route('/detailE', methods=['GET'])
+def detailE():
+    return render_template('detailE.html')
+
+#F
+@app.route('/detailF', methods=['GET'])
+def detailF():
+    return render_template('detailF.html')
+
+#G
+@app.route('/detailG', methods=['GET'])
+def detailG():
+    return render_template('detailG.html')
+
+#H
+@app.route('/detailH', methods=['GET'])
+def detailH():
+    return render_template('detailH.html')
+
+#I
+@app.route('/detailI', methods=['GET'])
+def detailI():
+    return render_template('detailI.html')
+
+#J
+@app.route('/detailJ', methods=['GET'])
+def detailJ():
+    return render_template('detailJ.html')
 # akhir halaman user
 
 

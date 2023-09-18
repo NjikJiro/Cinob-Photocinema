@@ -139,10 +139,20 @@
               <label for="foto" class="form-label">Foto</label>
               <input class="form-control" type="file" id="input-file" />
             </div>
-
             <p class="text-body-tertiary footnote">
               *Hanya bisa menginput satu file dalam satu waktu
             </p>
+
+            <!-- input dropdown -->
+            <div class="form-group">
+              <label for="layout-select">Jenis Layout</label>
+              <select class="form-control" id="layout-select">
+                <option value="">Pilih</option>
+                <option value="12">Penuh Baris landscape</option>
+                <option value="8">Setengah Baris landscape</option>
+                <option value="4">Sepertiga Baris atau setengah</option>
+              </select>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-dark" onclick="posting()">

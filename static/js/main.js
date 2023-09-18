@@ -128,7 +128,7 @@ function gallery() {
         let file = card[i]["file"];
         let temp_html = `
         <div class="col-md-4 mb-4 aos-init aos-animate" data-aos="flip-down">
-          <a href="/detailG">
+          <a href="">
             <div class="img-area">
               <img class="img-fluid" src="../${file}" alt="" height="100%">
             </div>

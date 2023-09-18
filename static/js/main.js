@@ -173,7 +173,7 @@ function gallery() {
         let colSize = card[i]["layout"] || 12; // Default menjadi 6 jika colSize tidak ada
         let temp_html = `
           <div class="col-md-${colSize} mb-4 aos-init aos-animate" data-aos="flip-down">
-            <a href="/detailG">
+            <a href="/">
               <div>
                 <img class="img-fluid" src="../${file}" alt="" height="100%">
               </div>

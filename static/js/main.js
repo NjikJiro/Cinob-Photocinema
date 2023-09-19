@@ -123,6 +123,7 @@ function listing() {
         let title = card[i]["title"];
         let file = card[i]["file"];
         let num = card[i]["num"];
+        let layout = card[i]["layout"];
         let temp_html = `
           <tr>
           <th scope="row">${i + 1}</th>
@@ -133,7 +134,11 @@ function listing() {
               class="img-fluid data-foto"
             />
           </td>
+          <td>${layout}</td>
           <td>
+            <button class="btn btn-success"">
+              <i class="bi bi-search"></i>          
+            </button>
             <button class="btn btn-danger" onclick="deletePost('${num}')">
               <i class="bi bi-trash3-fill"></i>
             </button>

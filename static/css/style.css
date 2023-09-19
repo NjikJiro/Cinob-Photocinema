@@ -58,6 +58,8 @@ ul{
 }
 .ragdoll-tag{
     cursor: pointer;
+    color: white;
+    text-decoration: none;
 }
 
 /* Gallery */
@@ -142,3 +144,4 @@ ul{
 .footnote{
     font-size: small;
 }
+

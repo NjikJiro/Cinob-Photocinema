@@ -42,6 +42,10 @@ def contact():
 def gallery():
     return render_template('gallery.html')
 
+@app.route('/team', methods=['GET'])
+def team():
+    return render_template('team.html')
+
 
 @app.route('/gallery2', methods=['GET'])
 def gallery2():

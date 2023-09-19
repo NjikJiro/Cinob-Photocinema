@@ -42,6 +42,7 @@ def contact():
 def gallery():
     return render_template('gallery.html')
 
+
 @app.route('/team', methods=['GET'])
 def team():
     return render_template('team.html')
@@ -146,7 +147,7 @@ def login():
         return render_template('login.html', msg=msg)
 
 
-@app.route('/get_posts', methods=['GET'])
+@app.route('/get-posts', methods=['GET'])
 def get_posts():
     card = list(db.product.find({}, {'_id': False}))
     return jsonify({'card': card})
@@ -165,7 +166,7 @@ def dashboard():
         return redirect(url_for("login", msg="Sepertinya terjadi kesalahan"))
 
 
-@app.route('/posting', methods=['POST'])
+@app.route('/adminpanel/posting', methods=['POST'])
 def posting():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
@@ -186,14 +187,13 @@ def posting():
             return jsonify({'msg': 'Mohon pilih jenis layout'}), 400
 
         # Mencari nomor folder terakhir
-        last_folder_number = list(
-            db.product.find().sort([('folder', -1)]).limit(1))
-        if len(last_folder_number) == 0 or 'folder' not in last_folder_number[0]:
-            detail = "detail 1"
+        last_folder = db.product.find_one(
+            sort=[('folder', -1)], projection={'folder': 1})
+        if last_folder and 'folder' in last_folder:
+            last_number = int(last_folder['folder'].replace('detail-', ''))
+            detail = f"detail-{last_number + 1}"
         else:
-            last_number = int(
-                last_folder_number[0]['folder'].replace('detail', ''))
-            detail = f"detail {last_number + 1}"
+            detail = "detail-1"
 
         directory = f'static/img/{detail}'
         os.makedirs(directory, exist_ok=True)
@@ -216,57 +216,9 @@ def posting():
             'layout': layout_receive  # Simpan jenis layout
         }
         db.product.insert_one(doc)
-        return jsonify({'msg': 'data telah ditambahkan'})
+        return jsonify({'msg': 'data telah ditambahkan', 'result': 'success'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('dashboard'))
-
-
-# @app.route('/posting', methods=['POST'])
-# def posting():
-#     token_receive = request.cookies.get(TOKEN_KEY)
-#     try:
-#         payload = jwt.decode(
-#             token_receive,
-#             SECRET_KEY,
-#             algorithms=['HS256']
-#         )
-#         user_info = db.users.find_one({'username': payload.get('id')})
-#         # buat kode input data disini
-#         title_receive = request.form.get('title_give')
-#         file = request.files['file_give']
-
-#         # Mencari nomor folder terakhir
-#         last_folder_number = list(
-#             db.product.find().sort([('folder', -1)]).limit(1))
-#         if len(last_folder_number) == 0 or 'folder' not in last_folder_number[0]:
-#             detail = "detail 1"
-#         else:
-#             last_number = int(
-#                 last_folder_number[0]['folder'].replace('detail', ''))
-#             detail = f"detail {last_number + 1}"
-
-#         directory = f'static/img/{detail}'
-#         os.makedirs(directory, exist_ok=True)
-#         # akhir kode cari folder
-
-#         extension = file.filename.split('.')[1]
-#         filename = f'{directory}/{title_receive}.{extension}'
-#         file.save(filename)
-
-#         count = db.bucket.count_documents({})
-#         num = count + 1
-
-#         doc = {
-#             'num': num,
-#             'username': user_info.get('username'),
-#             'title': title_receive,
-#             'file': filename,
-#             'folder': detail,
-#         }
-#         db.product.insert_one(doc)
-#         return jsonify({'msg': 'data telah ditambahkan'})
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for('dashboard'))
 
 
 @app.route('/login_save', methods=['POST'])
@@ -281,7 +233,7 @@ def login_save():
     if result:
         payload = {
             'id': username_receive,
-            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 1),
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
         return jsonify({'result': 'success', 'token': token})
@@ -292,7 +244,7 @@ def login_save():
         })
 
 
-@app.route('/adminpanel/delete_post', methods=['POST'])
+@app.route('/adminpanel/delete-post', methods=['POST'])
 def delete_post():
     num_receive = request.form['num_give']
 
@@ -312,6 +264,23 @@ def delete_post():
         return jsonify({'msg': 'hapus berhasil!'})
     else:
         return jsonify({'msg': 'post tidak ditemukan'})
+
+
+@app.route('/adminpanel/posting/<int:num>', methods=['GET'])
+def detail_post(num):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+        user_info = db.users.find_one({'username': payload.get('id')})
+        post = db.product.find_one({'num': num}, {'_id': False})
+        return render_template("detail.html", post=post, user_info=user_info)
+
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home'))
 
 
 if __name__ == '__main__':

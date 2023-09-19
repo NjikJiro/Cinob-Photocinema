@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='img/cinob.png') }}"
+    />
+    <title>Detail A | Cinob Photocinema</title>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark warnavbar">
+      <div class="container">
+        <a href="/" class="navbar-brand fw-bold">
+          <img
+            src="{{url_for('static', filename='img/logo.png')}}"
+            alt="Logo"
+            width="100"
+            height="auto"
+            class="d-inline-block align-text-top"
+        /></a>
+        <button
+          type="button"
+          class="navbar-toggler"
+          data-bs-target="#navbarNav"
+          data-bs-toggle="collapse"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a href="/" class="nav-link nav-nji text-white">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="/gallery" class="nav-link nav-nji text-white">Gallery</a>
+            </li>
+            <li class="nav-item">
+              <a href="/contact" class="nav-link nav-nji text-white"
+                >Contact Us</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/gallery" class="bread-item">Gallery</a>
+        </li>
+        <li class="breadcrumb-item active fw-semibold" aria-current="page">
+          {{ post.folder }}
+        </li>
+      </ol>
+    </div>
+
+    <!-- tulis kode dari sini -->
+    <div class="container">
+      <!-- div ini untuk testing aja, jika tidak dipake hapus aja sesuai keperluan -->
+      <div>
+        <h4>judul {{ post.title }}</h4>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="container-fluid mt-5 bg-black">
+      <div class="container text-white py-3">
+        <div class="row">
+          <div class="col-md-4">
+            <img
+              class="img-fluid mb-2 mt-3"
+              src="../static/img/logo.png"
+              alt=""
+              height="100%"
+            />
+            <p class="mb-2">
+              CINOB photo cinema sudah berdiri sejak 2016 sampai saat ini dan
+              sudah memiliki 2 studio photo yang berada di gobah dan di
+              marpoyan... <a href="" class="lengkap fw-medium">Selengkapnya</a>
+            </p>
+          </div>
+          <div class="col-md-5 ps-5">
+            <h5 class="mt-5">Studio Marpoyan</h5>
+            <p class="mb-4">
+              Jl. Gading Marpoyan Raya, Kubang Jaya, Riau 28284
+            </p>
+            <h5 class="mt-5">Studio Gobah</h5>
+            <p>Jl. Abdul Muis No.17, Kota Pekanbaru, Riau 28127</p>
+          </div>
+          <div class="col-md-3 ps-5">
+            <h5 class="mt-5">Ikuti Kami</h5>
+            <a href="#" class="text-white fs-4 me-3"
+              ><i class="bi bi-facebook"></i
+            ></a>
+            <a href="#" class="text-white fs-4 me-3"
+              ><i class="bi bi-instagram"></i
+            ></a>
+            <a href="#" class="text-white fs-4"
+              ><i class="bi bi-youtube"></i
+            ></a>
+
+            <ul class="mt-4 footer-list">
+              <li><a href="/">Home</a></li>
+              <li><a href="/gellery">Gallery</a></li>
+              <li><a href="/contact">Contact Us</a></li>
+              <li><a href="/faq">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid bg-blacki text-center text-white pt-3 pb-2">
+      <p>
+        Copyright &copy; 2023
+        <b><a href="/team" class="ragdoll-tag">Ragdoll Group</a></b>
+      </p>
+    </div>
+
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+  </body>
+</html>

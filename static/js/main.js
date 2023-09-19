@@ -32,45 +32,6 @@ function sign_out() {
   window.location.href = "/login";
 }
 
-// function posting() {
-//   let title = $("#input-title").val().trim();
-//   let file = $("#input-file").prop("files")[0];
-
-//   if (!title || !file) {
-//     alert("Mohon lengkapi data dengan benar");
-//     return;
-//   }
-
-//   // Validasi tipe file (hanya menerima gambar)
-//   if (!file.type.startsWith("image/") || file.type === "image/gif") {
-//     alert("Mohon pilih file gambar!");
-//     return;
-//   }
-//   // Validasi kapasitas file (maksimum 2 megabyte)
-//   if (file.size > 2 * 1024 * 1024) {
-//     alert("Ukuran file terlalu besar, maksimum 2 megabyte diperbolehkan");
-//     return;
-//   }
-
-//   // membuat objek formData
-//   form_data = new FormData();
-
-//   form_data.append("title_give", title);
-//   form_data.append("file_give", file);
-
-//   $.ajax({
-//     type: "POST",
-//     url: "/posting",
-//     data: form_data,
-//     contentType: false,
-//     processData: false,
-//     success: function (response) {
-//       alert(response["msg"]);
-//       window.location.reload();
-//     },
-//   });
-// }
-
 function posting() {
   let title = $("#input-title").val().trim();
   let file = $("#input-file").prop("files")[0];
@@ -101,7 +62,7 @@ function posting() {
 
   $.ajax({
     type: "POST",
-    url: "/posting",
+    url: "/adminpanel/posting",
     data: form_data,
     contentType: false,
     processData: false,
@@ -115,7 +76,7 @@ function posting() {
 function listing() {
   $.ajax({
     type: "GET",
-    url: "/get_posts",
+    url: "/get-posts",
     data: {},
     success: function (response) {
       let card = response["card"];
@@ -136,9 +97,9 @@ function listing() {
           </td>
           <td>${layout}</td>
           <td>
-            <button class="btn btn-success"">
+            <a href="/adminpanel/posting/${num}" class="btn btn-success">
               <i class="bi bi-search"></i>          
-            </button>
+            </a>
             <button class="btn btn-danger" onclick="deletePost('${num}')">
               <i class="bi bi-trash3-fill"></i>
             </button>
@@ -154,7 +115,7 @@ function listing() {
 function deletePost(num) {
   $.ajax({
     type: "POST",
-    url: "/adminpanel/delete_post",
+    url: "/adminpanel/delete-post",
     data: { num_give: num },
     success: function (response) {
       alert(response["msg"]);
@@ -209,26 +170,15 @@ function gallery() {
   });
 }
 
-// function gallery() {
-//   $.ajax({
-//     type: "GET",
-//     url: "/get_posts",
-//     data: {},
-//     success: function (response) {
-//       let card = response["card"];
-//       for (let i = 0; i < card.length; i++) {
-//         let file = card[i]["file"];
-//         let temp_html = `
-//         <div class="col-md-4 mb-4 aos-init aos-animate" data-aos="flip-down">
-//           <a href="">
-//             <div>
-//               <img class="img-fluid" src="../${file}" alt="" height="100%">
-//             </div>
-//           </a>
-//         </div>
-//       `;
-//         $("#cards-box").append(temp_html);
-//       }
-//     },
-//   });
-// }
+function detail_post(num) {
+  $.ajax({
+    type: "GET",
+    url: `/adminpanel/posting/${num}`, // Menggunakan URL yang sesuai dengan rute Flask yang baru
+    success: function (response) {
+      if (response.result === "success") {
+      } else {
+        alert("Gagal mengambil detail posting!");
+      }
+    },
+  });
+}

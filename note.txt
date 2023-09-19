@@ -1,0 +1,111 @@
+kode sebelumnya
+
+function gallery() {
+  $.ajax({
+    type: "GET",
+    url: "/get_posts",
+    data: {},
+    success: function (response) {
+      let card = response["card"];
+      for (let i = 0; i < card.length; i++) {
+        let file = card[i]["file"];
+        let temp_html = `
+        <div class="col-md-4 mb-4 aos-init aos-animate" data-aos="flip-down">
+          <a href="">
+            <div>
+              <img class="img-fluid" src="../${file}" alt="" height="100%">
+            </div>
+          </a>
+        </div>
+      `;
+        $("#cards-box").append(temp_html);
+      }
+    },
+  });
+}
+
+function posting() {
+  let title = $("#input-title").val().trim();
+  let file = $("#input-file").prop("files")[0];
+
+  if (!title || !file) {
+    alert("Mohon lengkapi data dengan benar");
+    return;
+  }
+
+  // Validasi tipe file (hanya menerima gambar)
+  if (!file.type.startsWith("image/") || file.type === "image/gif") {
+    alert("Mohon pilih file gambar!");
+    return;
+  }
+  // Validasi kapasitas file (maksimum 2 megabyte)
+  if (file.size > 2 * 1024 * 1024) {
+    alert("Ukuran file terlalu besar, maksimum 2 megabyte diperbolehkan");
+    return;
+  }
+
+  // membuat objek formData
+  form_data = new FormData();
+
+  form_data.append("title_give", title);
+  form_data.append("file_give", file);
+
+  $.ajax({
+    type: "POST",
+    url: "/posting",
+    data: form_data,
+    contentType: false,
+    processData: false,
+    success: function (response) {
+      alert(response["msg"]);
+      window.location.reload();
+    },
+  });
+}
+
+@app.route('/posting', methods=['POST'])
+def posting():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+        user_info = db.users.find_one({'username': payload.get('id')})
+        # buat kode input data disini
+        title_receive = request.form.get('title_give')
+        file = request.files['file_give']
+
+        # Mencari nomor folder terakhir
+        last_folder_number = list(
+            db.product.find().sort([('folder', -1)]).limit(1))
+        if len(last_folder_number) == 0 or 'folder' not in last_folder_number[0]:
+            detail = "detail 1"
+        else:
+            last_number = int(
+                last_folder_number[0]['folder'].replace('detail', ''))
+            detail = f"detail {last_number + 1}"
+
+        directory = f'static/img/{detail}'
+        os.makedirs(directory, exist_ok=True)
+        # akhir kode cari folder
+
+        extension = file.filename.split('.')[1]
+        filename = f'{directory}/{title_receive}.{extension}'
+        file.save(filename)
+
+        count = db.bucket.count_documents({})
+        num = count + 1
+
+        doc = {
+            'num': num,
+            'username': user_info.get('username'),
+            'title': title_receive,
+            'file': filename,
+            'folder': detail,
+        }
+        db.product.insert_one(doc)
+        return jsonify({'msg': 'data telah ditambahkan'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('dashboard'))

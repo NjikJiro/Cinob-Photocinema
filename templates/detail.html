@@ -41,7 +41,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark warnavbar">
       <div class="container">
-        <a href="#" class="navbar-brand fw-bold">
+        <a href="/adminpanel" class="navbar-brand fw-bold">
           <img
             src="{{ url_for('static', filename='img/logo.png') }}"
             alt="Logo"
@@ -78,7 +78,7 @@
     <!-- tulis kode dari sini -->
     <div class="container">
       <!-- div ini untuk testing aja, jika tidak dipake hapus aja sesuai keperluan -->
-      <h4>judul {{ post.title }}</h4>
+      <h4>Folder dari <b>{{ post.title }}</b></h4>
       <div class="d-flex justify-content-end">
         <button
           type="button"
@@ -145,7 +145,7 @@
               <input class="form-control" type="file" id="input-file" />
             </div>
             <p class="text-body-tertiary footnote">
-              *Hanya bisa menginput satu file dalam satu waktu
+              *Input gambar detail lebih banyak
             </p>
 
             <!-- input dropdown -->

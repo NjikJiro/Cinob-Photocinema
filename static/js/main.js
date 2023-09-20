@@ -127,7 +127,7 @@ function deletePost(num) {
 function gallery() {
   $.ajax({
     type: "GET",
-    url: "/get_posts",
+    url: "/get-posts",
     data: {},
     success: function (response) {
       let card = response["card"];

@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <!-- akhir link jquery -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
@@ -27,7 +35,7 @@
       type="image/x-icon"
       href="{{ url_for('static', filename='img/cinob.png') }}"
     />
-    <title>Detail A | Cinob Photocinema</title>
+    <title>Detail {{ post.title }} | Admin</title>
   </head>
   <body>
     <!-- Navbar -->
@@ -76,7 +84,7 @@
           type="button"
           class="btn btn-dark mt-3 ms-auto"
           data-bs-toggle="modal"
-          data-bs-target="#tambahdataModal"
+          data-bs-target="#tambahdataDetail"
         >
           + Tambah Data
         </button>
@@ -100,9 +108,67 @@
       </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="tambahdataDetail"
+      tabindex="-1"
+      aria-labelledby="tambahdataDetail"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="tambahdataModal">Tambah Data</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Input Judul -->
+            <div class="mb-3">
+              <label for="judul" class="form-label">Judul</label>
+              <input
+                type="text"
+                class="form-control"
+                id="input-title"
+                autocomplete="off"
+              />
+            </div>
 
-    <script src="../static/js/bootstrap.min.js"></script>
+            <!-- Input Gambar -->
+            <div class="mb-3">
+              <label for="foto" class="form-label">Foto</label>
+              <input class="form-control" type="file" id="input-file" />
+            </div>
+            <p class="text-body-tertiary footnote">
+              *Hanya bisa menginput satu file dalam satu waktu
+            </p>
+
+            <!-- input dropdown -->
+            <div class="form-group">
+              <label for="layout-select">Jenis Layout</label>
+              <select class="form-control" id="layout-select">
+                <option value="">Pilih</option>
+                <option value="12">Penuh Baris landscape</option>
+                <option value="6">Setengah Baris landscape</option>
+                <option value="4">Sepertiga Baris atau setengah</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-dark" onclick="posting()">
+              Simpan Perubahan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
       AOS.init();

@@ -91,7 +91,7 @@ function listing() {
           <td>${title}</td>
           <td>
             <img
-              src="../${file}"
+              src="../static/${file}"
               class="img-fluid data-foto"
             />
           </td>
@@ -173,9 +173,35 @@ function gallery() {
 function detail_post(num) {
   $.ajax({
     type: "GET",
-    url: `/adminpanel/posting/${num}`, // Menggunakan URL yang sesuai dengan rute Flask yang baru
+    url: `/get-posts-detail/${num}`, // Menggunakan URL yang sesuai dengan rute Flask yang baru
     success: function (response) {
       if (response.result === "success") {
+        let card = response["post_detail"];
+        for (let i = 0; i < card.length; i++) {
+          let title = card[i]["title"];
+          let file = card[i]["file"];
+          let num = card[i]["num"];
+          let layout = card[i]["layout"];
+          let temp_html = `
+            <tr>
+            <th scope="row">${i + 1}</th>
+            <td>${title}</td>
+            <td>
+              <img
+                src="../static/${file}"
+                class="img-fluid data-foto"
+              />
+            </td>
+            <td>${layout}</td>
+            <td>
+              <button class="btn btn-danger" onclick="deletePost('${num}')">
+                <i class="bi bi-trash3-fill"></i>
+              </button>
+            </td>
+          </tr>
+          `;
+          $("#cards-box").append(temp_html);
+        }
       } else {
         alert("Gagal mengambil detail posting!");
       }

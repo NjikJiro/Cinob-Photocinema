@@ -36,8 +36,12 @@
       href="{{ url_for('static', filename='img/cinob.png') }}"
     />
     <title>Detail {{ post.title }} | Admin</title>
-    <script>
+    <script type="">
       let num = {{ post.num }};
+
+      $(document).ready(function () {
+        detail_post(num)
+      });
     </script>
   </head>
   <body>
@@ -105,6 +109,20 @@
                 <th scope="col">Aksi</th>
               </tr>
             </thead>
+            <tr>
+              <td>{{ post.num }}</td>
+              <td>{{ post.title }}</td>
+              <td>
+                <img
+                  src="{{ url_for('static', filename=post.file) }}"
+                  class="img-fluid data-foto"
+                />
+              </td>
+              <td>{{ post.layout }}</td>
+              <td>
+                <button class="btn btn-primary">Tidak ada aksi</button>
+              </td>
+            </tr>
             <tbody id="cards-box"></tbody>
           </table>
         </div>

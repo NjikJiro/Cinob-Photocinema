@@ -249,6 +249,8 @@ def posting():
         filename = f'{directory}/{title_receive}.{extension}'
         file.save(filename)
 
+        DBfile = f'img/{detail}/{title_receive}.{extension}'
+
         count = db.product.count_documents({})
         num = count + 1
 
@@ -256,7 +258,7 @@ def posting():
             'num': num,
             'username': user_info.get('username'),
             'title': title_receive,
-            'file': filename,
+            'file': DBfile,
             'folder': detail,
             'layout': layout_receive  # Simpan jenis layout
         }
@@ -300,18 +302,21 @@ def detail_posting(num):
         title_receive = f'detail-{num}'
         file = request.files['file_give']
         layout_receive = request.form.get('layout_give')
+        num_folder = post.get('folder')
 
-        directory = f'static/img/detail-{num}'
+        directory = f'static/img/{num_folder}'
         os.makedirs(directory, exist_ok=True)
 
         extension = file.filename.split('.')[1]
         filename = f'{directory}/{title_receive}.{extension}'
         file.save(filename)
 
+        DBfile = f'img/{num_folder}/{title_receive}.{extension}'
+
         doc = {
             'num': num,
             'title': title_receive,
-            'file': filename,
+            'file': DBfile,
             'folder': post.get('folder'),
             'layout': layout_receive,
         }
@@ -319,6 +324,32 @@ def detail_posting(num):
         return jsonify({'msg': 'data telah ditambahkan', 'result': 'success'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home'))
+
+
+@app.route('/get-posts-detail/<int:num>', methods=['GET'])
+def get_post_detail(num):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+        post = db.product.find_one({'num': num}, {'_id': False})
+        num_folder = post.get('folder')
+        post_detail = list(db.product_detail.find(
+            {'folder': num_folder}, {'_id': False}))
+
+        if post_detail:
+            return jsonify({
+                'result': 'success',
+                'post_detail': post_detail
+            })
+        else:
+            return jsonify({'result': 'error', 'msg': 'Produk tidak ditemukan'}), 404
+
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({'result': 'error', 'msg': 'Token tidak valid'}), 401
 
 
 if __name__ == '__main__':

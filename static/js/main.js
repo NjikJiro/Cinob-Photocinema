@@ -182,3 +182,42 @@ function detail_post(num) {
     },
   });
 }
+
+function detail_posting(num) {
+  let file = $("#input-file-detail").prop("files")[0];
+  let layout = $("#layout-select-detail").val(); // Ambil nilai dropdown
+
+  if (!file || !layout) {
+    alert("Mohon lengkapi data dengan benar");
+    return;
+  }
+
+  // Validasi tipe file (hanya menerima gambar)
+  if (!file.type.startsWith("image/") || file.type === "image/gif") {
+    alert("Mohon pilih file gambar!");
+    return;
+  }
+
+  // Validasi kapasitas file (maksimum 2 megabyte)
+  if (file.size > 2 * 1024 * 1024) {
+    alert("Ukuran file terlalu besar, maksimum 2 megabyte diperbolehkan");
+    return;
+  }
+
+  // Membuat objek formData
+  let form_data = new FormData();
+  form_data.append("file_give", file);
+  form_data.append("layout_give", layout); // Menambahkan nilai layout ke formData
+
+  $.ajax({
+    type: "POST",
+    url: `/adminpanel/posting/${num}`,
+    data: form_data,
+    contentType: false,
+    processData: false,
+    success: function (response) {
+      alert(response["msg"]);
+      window.location.reload();
+    },
+  });
+}

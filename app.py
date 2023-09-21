@@ -166,6 +166,51 @@ def dashboard():
         return redirect(url_for("login", msg="Sepertinya terjadi kesalahan"))
 
 
+@app.route('/login_save', methods=['POST'])
+def login_save():
+    username_receive = request.form['username_give']
+    password_receive = request.form['password_give']
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    result = db.users.find_one({
+        'username': username_receive,
+        'password': pw_hash
+    })
+    if result:
+        payload = {
+            'id': username_receive,
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        return jsonify({'result': 'success', 'token': token})
+    else:
+        return jsonify({
+            "result": "fail",
+            "msg": "Kami tidak dapat menemukan pengguna dengan kombinasi id/kata sandi tersebut",
+        })
+
+
+@app.route('/adminpanel/delete-post', methods=['POST'])
+def delete_post():
+    num_receive = request.form['num_give']
+
+    # Temukan post yang akan dihapus
+    post = db.product.find_one({'num': int(num_receive)})
+
+    if post:
+        # Hapus folder terkait beserta isinya
+        folder_to_delete = post['folder']
+        folder_path = os.path.join('static', 'img', folder_to_delete)
+
+        if os.path.exists(folder_path):
+            shutil.rmtree(folder_path)  # Hapus folder dan isinya
+
+        # Hapus post dari database
+        db.product.delete_one({'num': int(num_receive)})
+        return jsonify({'msg': 'hapus berhasil!'})
+    else:
+        return jsonify({'msg': 'post tidak ditemukan'})
+
+
 @app.route('/adminpanel/posting', methods=['POST'])
 def posting():
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -221,51 +266,6 @@ def posting():
         return redirect(url_for('dashboard'))
 
 
-@app.route('/login_save', methods=['POST'])
-def login_save():
-    username_receive = request.form['username_give']
-    password_receive = request.form['password_give']
-    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
-    result = db.users.find_one({
-        'username': username_receive,
-        'password': pw_hash
-    })
-    if result:
-        payload = {
-            'id': username_receive,
-            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
-        }
-        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-        return jsonify({'result': 'success', 'token': token})
-    else:
-        return jsonify({
-            "result": "fail",
-            "msg": "Kami tidak dapat menemukan pengguna dengan kombinasi id/kata sandi tersebut",
-        })
-
-
-@app.route('/adminpanel/delete-post', methods=['POST'])
-def delete_post():
-    num_receive = request.form['num_give']
-
-    # Temukan post yang akan dihapus
-    post = db.product.find_one({'num': int(num_receive)})
-
-    if post:
-        # Hapus folder terkait beserta isinya
-        folder_to_delete = post['folder']
-        folder_path = os.path.join('static', 'img', folder_to_delete)
-
-        if os.path.exists(folder_path):
-            shutil.rmtree(folder_path)  # Hapus folder dan isinya
-
-        # Hapus post dari database
-        db.product.delete_one({'num': int(num_receive)})
-        return jsonify({'msg': 'hapus berhasil!'})
-    else:
-        return jsonify({'msg': 'post tidak ditemukan'})
-
-
 @app.route('/adminpanel/posting/<int:num>', methods=['GET'])
 def detail_post(num):
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -279,6 +279,44 @@ def detail_post(num):
         post = db.product.find_one({'num': num}, {'_id': False})
         return render_template("detail.html", post=post, user_info=user_info)
 
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home'))
+
+
+@app.route('/adminpanel/posting/<int:num>', methods=['POST'])
+def detail_posting(num):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+        post = db.product.find_one({'num': num}, {'_id': False})
+
+        # data input
+        count = db.product_detail.count_documents({})
+        num = count + 1
+        title_receive = f'detail-{num}'
+        file = request.files['file_give']
+        layout_receive = request.form.get('layout_give')
+
+        directory = f'static/img/detail-{num}'
+        os.makedirs(directory, exist_ok=True)
+
+        extension = file.filename.split('.')[1]
+        filename = f'{directory}/{title_receive}.{extension}'
+        file.save(filename)
+
+        doc = {
+            'num': num,
+            'title': title_receive,
+            'file': filename,
+            'folder': post.get('folder'),
+            'layout': layout_receive,
+        }
+        db.product_detail.insert_one(doc)
+        return jsonify({'msg': 'data telah ditambahkan', 'result': 'success'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home'))
 

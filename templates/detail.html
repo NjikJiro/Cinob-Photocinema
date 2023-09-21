@@ -36,6 +36,9 @@
       href="{{ url_for('static', filename='img/cinob.png') }}"
     />
     <title>Detail {{ post.title }} | Admin</title>
+    <script>
+      let num = {{ post.num }};
+    </script>
   </head>
   <body>
     <!-- Navbar -->
@@ -129,20 +132,20 @@
           </div>
           <div class="modal-body">
             <!-- Input Judul -->
-            <div class="mb-3">
-              <label for="judul" class="form-label">Judul</label>
-              <input
-                type="text"
-                class="form-control"
-                id="input-title"
-                autocomplete="off"
-              />
-            </div>
+            <!-- <div class="mb-3">
+                <label for="judul" class="form-label">Judul</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="input-title"
+                  autocomplete="off"
+                />
+              </div> -->
 
             <!-- Input Gambar -->
             <div class="mb-3">
               <label for="foto" class="form-label">Foto</label>
-              <input class="form-control" type="file" id="input-file" />
+              <input class="form-control" type="file" id="input-file-detail" />
             </div>
             <p class="text-body-tertiary footnote">
               *Input gambar detail lebih banyak
@@ -151,7 +154,7 @@
             <!-- input dropdown -->
             <div class="form-group">
               <label for="layout-select">Jenis Layout</label>
-              <select class="form-control" id="layout-select">
+              <select class="form-control" id="layout-select-detail">
                 <option value="">Pilih</option>
                 <option value="12">Penuh Baris landscape</option>
                 <option value="6">Setengah Baris landscape</option>
@@ -160,7 +163,11 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-dark" onclick="posting()">
+            <button
+              type="button"
+              class="btn btn-dark"
+              onclick="detail_posting(num)"
+            >
               Simpan Perubahan
             </button>
           </div>

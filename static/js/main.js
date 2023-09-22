@@ -174,39 +174,7 @@ function detail_post(num) {
   $.ajax({
     type: "GET",
     url: `/adminpanel/posting/${num}`, // Menggunakan URL yang sesuai dengan rute Flask yang baru
-    success: function (response) {
-      // if (response["result"] === "success") {
-      console.log("berhasil");
-      // let card = response["post_detail"];
-      // for (let i = 0; i < card.length; i++) {
-      //   let title = card[i]["title"];
-      //   let file = card[i]["file"];
-      //   let num = card[i]["num"];
-      //   let layout = card[i]["layout"];
-      //   let temp_html = `
-      //     <tr>
-      //     <td scope="row">${i + 1}</td>
-      //     <td>${title}</td>
-      //     <td>
-      //       <img
-      //         src="../static/${file}"
-      //         class="img-fluid data-foto"
-      //       />
-      //     </td>
-      //     <td>${layout}</td>
-      //     <td>
-      //       <button class="btn btn-danger" onclick="deletePost('${num}')">
-      //         <i class="bi bi-trash3-fill"></i>
-      //       </button>
-      //     </td>
-      //   </tr>
-      //   `;
-      //   $("#cards-box").append(temp_html);
-      // }
-      // } else {
-      //   alert("Gagal mengambil detail posting!");
-      // }
-    },
+    success: function (response) {},
   });
 }
 
@@ -245,6 +213,23 @@ function detail_posting(num) {
     success: function (response) {
       alert(response["msg"]);
       window.location.reload();
+    },
+  });
+}
+
+function deletePost_detail(num) {
+  $.ajax({
+    url: "/adminpanel/delete-post-detail/" + num,
+    type: "POST",
+    success: function (data) {
+      if (data.result === "success") {
+        alert(data.msg);
+      } else {
+        alert(data.msg);
+      }
+    },
+    error: function (error) {
+      console.error("Error:", error);
     },
   });
 }

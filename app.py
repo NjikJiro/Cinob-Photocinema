@@ -48,7 +48,7 @@ def team():
     return render_template('team.html')
 
 
-@app.route('/gallery2', methods=['GET'])
+@app.route('/gallery/2', methods=['GET'])
 def gallery2():
     return render_template('gallery2.html')
 
@@ -330,32 +330,37 @@ def detail_posting(num):
         return redirect(url_for('home'))
 
 
-# @app.route('/get-posts-detail/<int:num>', methods=['GET'])
-# def get_post_detail(num):
-#     token_receive = request.cookies.get(TOKEN_KEY)
-#     try:
-#         payload = jwt.decode(
-#             token_receive,
-#             SECRET_KEY,
-#             algorithms=['HS256']
-#         )
-#         post = db.product.find_one({'num': num}, {'_id': False})
-#         num_folder = post.get('folder')
-#         post_detail = list(db.product_detail.find(
-#             {'folder': num_folder}, {'_id': False}))
+@app.route('/adminpanel/delete-post-detail/<int:num>', methods=['POST'])
+def delete_post_detail(num):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
 
-#         if post_detail:
-#             # return jsonify({
-#             #     'result': 'success',
-#             #     'post_detail': post_detail
-#             # })
-#             count = 1
-#             return render_template('detail.html', post_detail=post_detail, post=post, count=count)
-#         else:
-#             return jsonify({'result': 'error', 'msg': 'Produk tidak ditemukan'}), 404
+        # Cari postingan berdasarkan 'num' untuk mendapatkan folder
+        post = db.product.find_one({'num': num}, {'_id': False})
 
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return jsonify({'result': 'error', 'msg': 'Token tidak valid'}), 401
+        if post is not None:
+            num_folder = post.get('folder')
+
+            # Hapus data detail berdasarkan 'num'
+            db.product_detail.delete_one({'num': num})
+
+            # Hapus foto dari folder
+            folder_path = f'static/img/{num_folder}'
+            if os.path.exists(folder_path):
+                # Hapus semua file dengan nama 'detail-{num}.*'
+                os.remove(os.path.join(folder_path, f'detail-{num}.*'))
+
+            return jsonify({'msg': 'Data telah dihapus', 'result': 'success'})
+        else:
+            return jsonify({'msg': 'Postingan tidak ditemukan', 'result': 'error'})
+
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home'))
 
 
 if __name__ == '__main__':

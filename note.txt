@@ -109,3 +109,32 @@ def posting():
         return jsonify({'msg': 'data telah ditambahkan'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('dashboard'))
+
+
+# @app.route('/get-posts-detail/<int:num>', methods=['GET'])
+# def get_post_detail(num):
+#     token_receive = request.cookies.get(TOKEN_KEY)
+#     try:
+#         payload = jwt.decode(
+#             token_receive,
+#             SECRET_KEY,
+#             algorithms=['HS256']
+#         )
+#         post = db.product.find_one({'num': num}, {'_id': False})
+#         num_folder = post.get('folder')
+#         post_detail = list(db.product_detail.find(
+#             {'folder': num_folder}, {'_id': False}))
+
+#         if post_detail:
+#             # return jsonify({
+#             #     'result': 'success',
+#             #     'post_detail': post_detail
+#             # })
+#             count = 1
+#             return render_template('detail.html', post_detail=post_detail, post=post, count=count)
+#         else:
+#             return jsonify({'result': 'error', 'msg': 'Produk tidak ditemukan'}), 404
+
+#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#         return jsonify({'result': 'error', 'msg': 'Token tidak valid'}), 401
+

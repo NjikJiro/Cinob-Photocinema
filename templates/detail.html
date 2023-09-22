@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- link jquery -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
@@ -12,8 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <!-- akhir link jquery -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
@@ -36,14 +35,16 @@
       type="image/x-icon"
       href="{{ url_for('static', filename='img/cinob.png') }}"
     />
-    <title>Dashboard Admin | Cinob Photocinema</title>
-    <script>
+    <title>Detail {{ post.title }} | Admin</title>
+    <script type="">
+      let num = {{ post.num }};
+
       $(document).ready(function () {
-        listing();
+        detail_post(num)
       });
     </script>
   </head>
-  <body style="background-color: rgb(245, 245, 245)">
+  <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark warnavbar">
       <div class="container">
@@ -70,30 +71,30 @@
       </div>
     </nav>
 
-    <!-- Greeting Message -->
-    <div class="container bg-white mt-3 py-4 shadow rounded">
-      <div class="row">
-        <div class="col">
-          <h4 class="ms-3">Selamat datang, {{ user_info.username }}</h4>
-        </div>
-      </div>
+    <div class="container mt-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/adminpanel" class="bread-item">Admin</a>
+        </li>
+        <li class="breadcrumb-item active fw-semibold" aria-current="page">
+          {{ post.title }}
+        </li>
+      </ol>
     </div>
 
-    <!-- Tabel Data -->
-    <div class="container bg-white mt-3 mb-5 py-4 px-3 shadow rounded">
-      <div class="row mt-3">
-        <div class="col-md-10"></div>
-        <div class="col-md-2">
-          <!-- Tombol untuk mengaktifkan modal -->
-          <button
-            type="button"
-            class="btn btn-dark"
-            data-bs-toggle="modal"
-            data-bs-target="#tambahdataModal"
-          >
-            + Tambah Data
-          </button>
-        </div>
+    <!-- tulis kode dari sini -->
+    <div class="container">
+      <!-- div ini untuk testing aja, jika tidak dipake hapus aja sesuai keperluan -->
+      <h4>Folder dari <b>{{ post.title }}</b></h4>
+      <div class="d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-dark mt-3 ms-auto"
+          data-bs-toggle="modal"
+          data-bs-target="#tambahdataDetail"
+        >
+          + Tambah Data
+        </button>
       </div>
       <div class="row mt-3">
         <div class="col">
@@ -108,7 +109,41 @@
                 <th scope="col">Aksi</th>
               </tr>
             </thead>
-            <tbody id="cards-box"></tbody>
+            <tr>
+              <td>{{ post.num }}</td>
+              <td>{{ post.title }}</td>
+              <td>
+                <img
+                  src="{{ url_for('static', filename=post.file) }}"
+                  class="img-fluid data-foto"
+                />
+              </td>
+              <td>{{ post.layout }}</td>
+              <td>
+                <button class="btn btn-primary">Tidak ada aksi</button>
+              </td>
+            </tr>
+            <tbody id="cards-box">
+              <!-- disini -->
+              {% set count = 2 %} {% for item in post_detail %}
+              <tr>
+                <td>{{ count }}</td>
+                <td>{{ item.title }}</td>
+                <td>
+                  <img
+                    src="/static/{{item.file}}"
+                    class="img-fluid data-foto"
+                  />
+                </td>
+                <td>{{item.layout}}</td>
+                <td>
+                  <button class="btn btn-danger" onclick="">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </td>
+              </tr>
+              {% set count = count + 1 %} {% endfor %}
+            </tbody>
           </table>
         </div>
       </div>
@@ -117,9 +152,9 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="tambahdataModal"
+      id="tambahdataDetail"
       tabindex="-1"
-      aria-labelledby="tambahdataModal"
+      aria-labelledby="tambahdataDetail"
       aria-hidden="true"
     >
       <div class="modal-dialog">
@@ -135,29 +170,29 @@
           </div>
           <div class="modal-body">
             <!-- Input Judul -->
-            <div class="mb-3">
-              <label for="judul" class="form-label">Judul</label>
-              <input
-                type="text"
-                class="form-control"
-                id="input-title"
-                autocomplete="off"
-              />
-            </div>
+            <!-- <div class="mb-3">
+                <label for="judul" class="form-label">Judul</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="input-title"
+                  autocomplete="off"
+                />
+              </div> -->
 
             <!-- Input Gambar -->
             <div class="mb-3">
               <label for="foto" class="form-label">Foto</label>
-              <input class="form-control" type="file" id="input-file" />
+              <input class="form-control" type="file" id="input-file-detail" />
             </div>
             <p class="text-body-tertiary footnote">
-              *Input gambar untuk banner
+              *Input gambar detail lebih banyak
             </p>
 
             <!-- input dropdown -->
             <div class="form-group">
               <label for="layout-select">Jenis Layout</label>
-              <select class="form-control" id="layout-select">
+              <select class="form-control" id="layout-select-detail">
                 <option value="">Pilih</option>
                 <option value="12">Penuh Baris landscape</option>
                 <option value="6">Setengah Baris landscape</option>
@@ -166,7 +201,11 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-dark" onclick="posting()">
+            <button
+              type="button"
+              class="btn btn-dark"
+              onclick="detail_posting(num)"
+            >
               Simpan Perubahan
             </button>
           </div>
@@ -174,7 +213,10 @@
       </div>
     </div>
 
-    <!-- Script -->
-    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
   </body>
 </html>

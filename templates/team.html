@@ -13,19 +13,29 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../static/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="../static/img/cinob.png" />
-    <title>Detail E | Cinob Photocinema</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='img/cinob.png') }}"
+    />
+    <title>Document</title>
   </head>
-  <body>
+  <body style="background-color: rgb(240, 240, 240)">
     <!-- Navbar -->
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark warnavbar">
       <div class="container">
         <a href="/" class="navbar-brand fw-bold">
           <img
-            src="../static/img/logo.png"
+            src="{{ url_for('static', filename='img/logo.png') }}"
             alt="Logo"
             width="100"
             height="auto"
@@ -63,101 +73,78 @@
       </div>
     </nav>
 
-    <div class="container mt-4">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="/gallery" class="bread-item">Gallery</a>
-        </li>
-        <li class="breadcrumb-item active fw-semibold" aria-current="page">
-          Detail E
-        </li>
-      </ol>
-      <div class="row mt-5">
-        <div class="col-md-4 mb-4">
-          <img
-            class="img-fluid"
-            src="../static/img/gallery-img/E1.jpeg"
-            alt=""
-            height="100%"
-          />
-        </div>
-        <div class="col-md-4 mb-4">
-          <img
-            class="img-fluid"
-            src="../static/img/gallery-img/E2.jpeg"
-            alt=""
-            height="100%"
-          />
-        </div>
-        <div class="col-md-4 mb-4">
-          <img
-            class="img-fluid"
-            src="../static/img/gallery-img/E3.jpeg"
-            alt=""
-            height="100%"
-          />
-        </div>
+    <div class="container">
+      <div class="text-center mt-5">
+        <h2 class="mb-5">Our Team</h2>
       </div>
       <div class="row">
-        <div class="col-md-6 mb-4">
-          <img
-            class="img-fluid"
-            src="../static/img/gallery-img/E4.jpeg"
-            alt=""
-            height="100%"
-          />
+        <div class="col-md-3 p-2">
+          <div class="bg-white p-4 shadow text-center rounded-3">
+            <img
+              src="../static/img/pp1.jpeg"
+              alt=""
+              class="img-fluid rounded-circle"
+            />
+            <h5 class="mt-2">Adyadma Renjiro</h5>
+            <p class="mt-3 text-center mb-3">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Et ab
+              iusto alias blanditiis voluptatem velit quasi voluptatibus facilis
+              debitis.
+            </p>
+            <i class="bi bi-facebook fs-5"></i>
+            <i class="bi bi-instagram fs-5"></i>
+          </div>
         </div>
-        <div class="col-md-6 mb-4">
-          <img
-            class="img-fluid"
-            src="../static/img/gallery-img/E5.jpeg"
-            alt=""
-            height="100%"
-          />
+        <div class="col-md-3 p-2">
+          <div class="bg-white p-4 shadow text-center rounded-3">
+            <img
+              src="../static/img/pp1.jpeg"
+              alt=""
+              class="img-fluid rounded-circle"
+            />
+            <h5 class="mt-2">Raihan Maulana Syahputra</h5>
+            <p class="mt-3 text-center mb-3">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Et ab
+              iusto alias blanditiis voluptatem velit quasi voluptatibus facilis
+              debitis.
+            </p>
+            <i class="bi bi-facebook fs-5"></i>
+            <i class="bi bi-instagram fs-5"></i>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mb-4">
-          <img
-            class="img-fluid"
-            src="../static/img/gallery-img/E6.jpeg"
-            alt=""
-            height="100%"
-          />
+        <div class="col-md-3 p-2">
+          <div class="bg-white p-4 shadow text-center rounded-3">
+            <img
+              src="../static/img/pp1.jpeg"
+              alt=""
+              class="img-fluid rounded-circle"
+            />
+            <h5 class="mt-2">Fawaz Afif</h5>
+            <p class="mt-3 text-center mb-3">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Et ab
+              iusto alias blanditiis voluptatem velit quasi voluptatibus facilis
+              debitis.
+            </p>
+            <i class="bi bi-facebook fs-5"></i>
+            <i class="bi bi-instagram fs-5"></i>
+          </div>
         </div>
-        <div class="col-md-6 mb-4">
-          <img
-            class="img-fluid"
-            src="../static/img/gallery-img/E7.jpeg"
-            alt=""
-            height="100%"
-          />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 mb-4">
-          <img
-            class="img-fluid"
-            src="../static/img/gallery-img/E8.jpeg"
-            alt=""
-            height="100%"
-          />
-        </div>
-        <div class="col-md-4 mb-4">
-          <img
-            class="img-fluid"
-            src="../static/img/gallery-img/E9.jpeg"
-            alt=""
-            height="100%"
-          />
-        </div>
-        <div class="col-md-4 mb-4">
-          <img
-            class="img-fluid"
-            src="../static/img/gallery-img/E10.jpeg"
-            alt=""
-            height="100%"
-          />
+        <div class="col-md-3 p-2">
+          <div class="bg-white p-4 shadow text-center rounded-3">
+            <img
+              src="../static/img/pp1.jpeg"
+              alt=""
+              class="img-fluid rounded-circle"
+            />
+            <h5 class="mt-2">Daffa Mulya Ramadhan</h5>
+            <p class="mt-3 text-center mb-3">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Et ab
+              iusto alias blanditiis voluptatem velit quasi voluptatibus facilis
+              debitis.
+            </p>
+            <i class="bi bi-facebook fs-5"></i>
+            <i class="bi bi-instagram fs-5"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -169,7 +156,7 @@
           <div class="col-md-4">
             <img
               class="img-fluid mb-2 mt-3"
-              src="../static/img/logo.png"
+              src="{{ url_for('static', filename='img/logo.png') }}"
               alt=""
               height="100%"
             />
@@ -211,12 +198,12 @@
     </div>
 
     <div class="container-fluid bg-blacki text-center text-white pt-3 pb-2">
-      <p>Copyright &copy; 2023 <b><a href="/team"  class="ragdoll-tag">Ragdoll Group</a></b></p>
+      <p>Copyright &copy; 2023 <b class="ragdoll-tag">Ragdoll Group</b></p>
     </div>
 
-    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>x
+    <script>
       AOS.init();
     </script>
   </body>

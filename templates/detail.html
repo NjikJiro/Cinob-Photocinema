@@ -123,7 +123,27 @@
                 <button class="btn btn-primary">Tidak ada aksi</button>
               </td>
             </tr>
-            <tbody id="cards-box"></tbody>
+            <tbody id="cards-box">
+              <!-- disini -->
+              {% set count = 2 %} {% for item in post_detail %}
+              <tr>
+                <td>{{ count }}</td>
+                <td>{{ item.title }}</td>
+                <td>
+                  <img
+                    src="/static/{{item.file}}"
+                    class="img-fluid data-foto"
+                  />
+                </td>
+                <td>{{item.layout}}</td>
+                <td>
+                  <button class="btn btn-danger" onclick="">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </td>
+              </tr>
+              {% set count = count + 1 %} {% endfor %}
+            </tbody>
           </table>
         </div>
       </div>

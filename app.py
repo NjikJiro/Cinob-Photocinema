@@ -279,7 +279,11 @@ def detail_post(num):
         )
         user_info = db.users.find_one({'username': payload.get('id')})
         post = db.product.find_one({'num': num}, {'_id': False})
-        return render_template("detail.html", post=post, user_info=user_info)
+        num_folder = post.get('folder')
+        post_detail = list(db.product_detail.find(
+            {'folder': num_folder}, {'_id': False}))
+        count = 1
+        return render_template('detail.html', post_detail=post_detail, post=post, count=count, user_info=user_info)
 
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home'))
@@ -326,30 +330,32 @@ def detail_posting(num):
         return redirect(url_for('home'))
 
 
-@app.route('/get-posts-detail/<int:num>', methods=['GET'])
-def get_post_detail(num):
-    token_receive = request.cookies.get(TOKEN_KEY)
-    try:
-        payload = jwt.decode(
-            token_receive,
-            SECRET_KEY,
-            algorithms=['HS256']
-        )
-        post = db.product.find_one({'num': num}, {'_id': False})
-        num_folder = post.get('folder')
-        post_detail = list(db.product_detail.find(
-            {'folder': num_folder}, {'_id': False}))
+# @app.route('/get-posts-detail/<int:num>', methods=['GET'])
+# def get_post_detail(num):
+#     token_receive = request.cookies.get(TOKEN_KEY)
+#     try:
+#         payload = jwt.decode(
+#             token_receive,
+#             SECRET_KEY,
+#             algorithms=['HS256']
+#         )
+#         post = db.product.find_one({'num': num}, {'_id': False})
+#         num_folder = post.get('folder')
+#         post_detail = list(db.product_detail.find(
+#             {'folder': num_folder}, {'_id': False}))
 
-        if post_detail:
-            return jsonify({
-                'result': 'success',
-                'post_detail': post_detail
-            })
-        else:
-            return jsonify({'result': 'error', 'msg': 'Produk tidak ditemukan'}), 404
+#         if post_detail:
+#             # return jsonify({
+#             #     'result': 'success',
+#             #     'post_detail': post_detail
+#             # })
+#             count = 1
+#             return render_template('detail.html', post_detail=post_detail, post=post, count=count)
+#         else:
+#             return jsonify({'result': 'error', 'msg': 'Produk tidak ditemukan'}), 404
 
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return jsonify({'result': 'error', 'msg': 'Token tidak valid'}), 401
+#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#         return jsonify({'result': 'error', 'msg': 'Token tidak valid'}), 401
 
 
 if __name__ == '__main__':

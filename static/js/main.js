@@ -49,28 +49,45 @@ function posting() {
   }
 
   // Validasi kapasitas file (maksimum 2 megabyte)
-  if (file.size > 2 * 1024 * 1024) {
-    alert("Ukuran file terlalu besar, maksimum 2 megabyte diperbolehkan");
-    return;
-  }
+  // if (file.size > 2 * 1024 * 1024) {
+  //   alert("Ukuran file terlalu besar, maksimum 2 megabyte diperbolehkan");
+  //   return;
+  // }
 
-  // Membuat objek formData
-  let form_data = new FormData();
-  form_data.append("title_give", title);
-  form_data.append("file_give", file);
-  form_data.append("layout_give", layout); // Menambahkan nilai layout ke formData
+  // Membuat objek gambar untuk memeriksa ukuran
+  let image = new Image();
+  image.src = URL.createObjectURL(file);
 
-  $.ajax({
-    type: "POST",
-    url: "/adminpanel/posting",
-    data: form_data,
-    contentType: false,
-    processData: false,
-    success: function (response) {
-      alert(response["msg"]);
-      window.location.reload();
-    },
-  });
+  image.onload = function () {
+    // Validasi ukuran width dan height
+    if (image.width >= 1200 && image.height >= 900) {
+      // Gambar memenuhi syarat, lanjutkan dengan pengiriman data
+      let form_data = new FormData();
+      form_data.append("title_give", title);
+      form_data.append("file_give", file);
+      form_data.append("layout_give", layout); // Menambahkan nilai layout ke formData
+
+      $.ajax({
+        type: "POST",
+        url: "/adminpanel/posting",
+        data: form_data,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+          alert(response["msg"]);
+          window.location.reload();
+        },
+      });
+    } else {
+      alert("Ukuran gambar harus minimal 1300px lebar dan 900px tinggi");
+    }
+  };
+
+  image.onerror = function () {
+    alert(
+      "Gagal memuat gambar. Pastikan file yang dipilih adalah gambar yang valid."
+    );
+  };
 }
 
 function listing() {
@@ -139,14 +156,13 @@ function gallery() {
         let colSize = card[i]["layout"] || 12; // Default menjadi 6 jika colSize tidak ada
         let temp_html = `
           <div class="col-md-${colSize} mb-4 aos-init aos-animate" data-aos="flip-down">
-            <a href="/">
-              <div>
-                <img class="img-fluid" src="../${file}" alt="" height="100%">
-              </div>
-            </a>
-          </div>
+          <a href="/">
+            <div class="img-area">
+              <img class="img-fluid" src="../static/${file}" alt="" height="50%">
+            </div>
+          </a>
+        </div>        
         `;
-
         // Tambahkan elemen kolom ke `currentRowHtml` dan tambahkan jumlah kolom saat ini
         currentRowHtml += temp_html;
         currentColCount += colSize;

@@ -303,7 +303,7 @@ def detail_posting(num):
         # data input
         count = db.product_detail.count_documents({})
         num = count + 1
-        title_receive = f'detail-{num}'
+        title_receive = request.form.get('title_give')
         file = request.files['file_give']
         layout_receive = request.form.get('layout_give')
         num_folder = post.get('folder')
@@ -339,26 +339,19 @@ def delete_post_detail(num):
             SECRET_KEY,
             algorithms=['HS256']
         )
+        detail = db.product_detail.find_one({'num': num})
 
-        # Cari postingan berdasarkan 'num' untuk mendapatkan folder
-        post = db.product.find_one({'num': num}, {'_id': False})
+        if detail:
+            file_path = os.path.join('static', detail['file'])
 
-        if post is not None:
-            num_folder = post.get('folder')
+            if os.path.exists(file_path):
+                os.remove(file_path)
 
-            # Hapus data detail berdasarkan 'num'
             db.product_detail.delete_one({'num': num})
 
-            # Hapus foto dari folder
-            folder_path = f'static/img/{num_folder}'
-            if os.path.exists(folder_path):
-                # Hapus semua file dengan nama 'detail-{num}.*'
-                os.remove(os.path.join(folder_path, f'detail-{num}.*'))
-
-            return jsonify({'msg': 'Data telah dihapus', 'result': 'success'})
+            return jsonify({'msg': 'File detail telah dihapus', 'result': 'success'})
         else:
-            return jsonify({'msg': 'Postingan tidak ditemukan', 'result': 'error'})
-
+            return jsonify({'msg': 'File detail tidak ditemukan', 'result': 'error'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home'))
 

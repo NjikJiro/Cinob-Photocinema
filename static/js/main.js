@@ -179,6 +179,7 @@ function detail_post(num) {
 }
 
 function detail_posting(num) {
+  let title = $("#input-title-detail").val().trim();
   let file = $("#input-file-detail").prop("files")[0];
   let layout = $("#layout-select-detail").val(); // Ambil nilai dropdown
 
@@ -218,18 +219,23 @@ function detail_posting(num) {
 }
 
 function deletePost_detail(num) {
-  $.ajax({
-    url: "/adminpanel/delete-post-detail/" + num,
-    type: "POST",
-    success: function (data) {
-      if (data.result === "success") {
-        alert(data.msg);
-      } else {
-        alert(data.msg);
-      }
-    },
-    error: function (error) {
-      console.error("Error:", error);
-    },
-  });
+  if (confirm("Apakah Anda yakin ingin menghapus foto detail ini?")) {
+    $.ajax({
+      type: "POST",
+      url: "/adminpanel/delete-post-detail/" + num, // Sesuaikan dengan URL endpoint Anda
+      success: function (response) {
+        if (response.result === "success") {
+          // Hapus baris tabel dari DOM jika berhasil
+          $(`tr[data-num="${num}"]`).remove();
+          alert(response.msg); // Tampilkan pesan sukses
+          window.location.reload();
+        } else {
+          alert(response.msg); // Tampilkan pesan error
+        }
+      },
+      error: function () {
+        alert("Terjadi kesalahan saat menghapus foto detail.");
+      },
+    });
+  }
 }

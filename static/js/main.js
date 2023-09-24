@@ -114,6 +114,14 @@ function listing() {
           </td>
           <td>${layout}</td>
           <td>
+            <button
+              type="button"
+              class="btn btn-warning"
+              data-bs-toggle="modal"
+              data-bs-target="#editdataDetail"
+              onclick="updatePost('${num}')">
+              <i class="bi bi-pencil-square"></i>
+            </button>
             <a href="/adminpanel/posting/${num}" class="btn btn-success">
               <i class="bi bi-search"></i>          
             </a>
@@ -124,6 +132,57 @@ function listing() {
         </tr>
         `;
         $("#cards-box").append(temp_html);
+      }
+    },
+  });
+}
+
+function updatePost(num) {
+  $.ajax({
+    type: "GET",
+    url: `/adminpanel/get-posting/${num}`,
+    success: function (response) {
+      if (response.result === "success") {
+        let post = response.post;
+        $("#input-title-edit").val(post.title);
+        $("#layout-select-edit").val(post.layout);
+
+        // Set nomor posting pada tombol "Simpan Perubahan"
+        $("#update-post-button").attr("onclick", `saveChanges(${num})`);
+
+        // Munculkan modal edit
+        $("#editdataDetail").modal("show");
+      } else {
+        alert(response.msg);
+      }
+    },
+  });
+}
+
+function saveChanges(num) {
+  let title = $("#input-title-edit").val();
+  let newImage = $("#input-file-edit")[0].files[0];
+  let layout = $("#layout-select-edit").val();
+
+  let formData = new FormData();
+  formData.append("title", title);
+  formData.append("layout", layout);
+
+  if (newImage) {
+    formData.append("file_give", newImage);
+  }
+
+  $.ajax({
+    type: "POST",
+    url: `/adminpanel/update-posting/${num}`,
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function (response) {
+      if (response.result === "success") {
+        window.location.reload();
+      } else {
+        alert(response.msg);
       }
     },
   });

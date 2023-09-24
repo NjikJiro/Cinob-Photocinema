@@ -159,6 +159,7 @@ def dashboard():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({'username': payload.get('id')})
+
         return render_template("adminpanel.html", user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="Sesi login kamu telah kadaluwarsa"))
@@ -266,6 +267,74 @@ def posting():
         return jsonify({'msg': 'data telah ditambahkan', 'result': 'success'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('dashboard'))
+
+
+@app.route('/adminpanel/update-posting/<int:num>', methods=['POST'])
+def update_posting(num):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+
+        title = request.form.get('title')
+        layout = request.form.get('layout')
+
+        if "file_give" in request.files:
+            new_image = request.files['file_give']
+
+            old_post = db.product.find_one({'num': num})
+            old_image_path = old_post.get('file')
+
+            if new_image:
+                # Lakukan penyimpanan file gambar yang baru
+                extension = new_image.filename.split(
+                    '.')[-1]  # Ambil ekstensi dengan benar
+                filename = f'static/img/detail-{num}/{title}.{extension}'
+                new_image.save(filename)
+
+                new_image_path = f'img/detail-{num}/{title}.{extension}'
+                db.product.update_one({'num': num}, {
+                                      '$set': {'title': title, 'layout': layout, 'file': new_image_path}})
+
+                # Hapus gambar yang lama
+                if old_image_path:
+                    old_image_file = os.path.join('static', old_image_path)
+                    if os.path.exists(old_image_file):
+                        os.remove(old_image_file)
+
+        else:
+            # Jika tidak ada file yang diunggah, tetap perbarui title dan layout
+            db.product.update_one(
+                {'num': num}, {'$set': {'title': title, 'layout': layout}})
+
+        return jsonify({'result': 'success', 'msg': 'Data telah diperbarui'})
+
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home'))
+
+
+@app.route('/adminpanel/get-posting/<int:num>', methods=['GET'])
+def get_posting(num):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+
+        post = db.product.find_one({'num': num}, {'_id': False})
+
+        if posting:
+            return jsonify({'result': 'success', 'post': post})
+        else:
+            return jsonify({'result': 'error', 'msg': 'Posting tidak ditemukan'}), 404
+
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home'))
 
 
 @app.route('/adminpanel/posting/<int:num>', methods=['GET'])

@@ -53,6 +53,13 @@ def gallery2():
     return render_template('gallery2.html')
 
 
+@app.route('/gallery/2/detail-<title>', methods=['GET'])
+def gallery_detail(title):
+    post = db.product.find_one({'title': title}, {'_id': False})
+    # tulis kode disini
+    # dapatkan data dari product_detail
+
+
 @app.route('/faq', methods=['GET'])
 def faq():
     return render_template('faq.html')

@@ -207,6 +207,7 @@ def delete_post():
 
         # Hapus post dari database
         db.product.delete_one({'num': int(num_receive)})
+        db.product_detail.delete_many({'folder': post.get('folder')})
         return jsonify({'msg': 'hapus berhasil!'})
     else:
         return jsonify({'msg': 'post tidak ditemukan'})

@@ -205,6 +205,7 @@ def posting():
     </div>
 
 
-- masalah
-1. pada adminpanel saat edit data yang sudah input tidak terlihat tapi dapat mengganti yang baru.
-2. 
+- masalah pada halaman user
+1. pada gallery 2 layout masih kurang rapi
+2. pada gallery 2 belum dibuat halaman klik ke halaman foto detail
+

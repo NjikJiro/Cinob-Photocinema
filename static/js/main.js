@@ -114,6 +114,9 @@ function listing() {
           </td>
           <td>${layout}</td>
           <td>
+            <a href="/adminpanel/posting/${num}" class="btn btn-success">
+              <i class="bi bi-search"></i>          
+            </a>
             <button
               type="button"
               class="btn btn-warning"
@@ -122,9 +125,6 @@ function listing() {
               onclick="updatePost('${num}')">
               <i class="bi bi-pencil-square"></i>
             </button>
-            <a href="/adminpanel/posting/${num}" class="btn btn-success">
-              <i class="bi bi-search"></i>          
-            </a>
             <button class="btn btn-danger" onclick="deletePost('${num}')">
               <i class="bi bi-trash3-fill"></i>
             </button>
@@ -258,7 +258,7 @@ function detail_posting(num) {
   let file = $("#input-file-detail").prop("files")[0];
   let layout = $("#layout-select-detail").val(); // Ambil nilai dropdown
 
-  if (!file || !layout) {
+  if (!file || !layout || !title) {
     alert("Mohon lengkapi data dengan benar");
     return;
   }
@@ -277,6 +277,7 @@ function detail_posting(num) {
 
   // Membuat objek formData
   let form_data = new FormData();
+  form_data.append("title_give", title); // Menambahkan nilai layout ke formData
   form_data.append("file_give", file);
   form_data.append("layout_give", layout); // Menambahkan nilai layout ke formData
 

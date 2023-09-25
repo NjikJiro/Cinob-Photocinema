@@ -49,28 +49,45 @@ function posting() {
   }
 
   // Validasi kapasitas file (maksimum 2 megabyte)
-  if (file.size > 2 * 1024 * 1024) {
-    alert("Ukuran file terlalu besar, maksimum 2 megabyte diperbolehkan");
-    return;
-  }
+  // if (file.size > 2 * 1024 * 1024) {
+  //   alert("Ukuran file terlalu besar, maksimum 2 megabyte diperbolehkan");
+  //   return;
+  // }
 
-  // Membuat objek formData
-  let form_data = new FormData();
-  form_data.append("title_give", title);
-  form_data.append("file_give", file);
-  form_data.append("layout_give", layout); // Menambahkan nilai layout ke formData
+  // Membuat objek gambar untuk memeriksa ukuran
+  let image = new Image();
+  image.src = URL.createObjectURL(file);
 
-  $.ajax({
-    type: "POST",
-    url: "/adminpanel/posting",
-    data: form_data,
-    contentType: false,
-    processData: false,
-    success: function (response) {
-      alert(response["msg"]);
-      window.location.reload();
-    },
-  });
+  image.onload = function () {
+    // Validasi ukuran width dan height
+    if (image.width >= 1200 && image.height >= 900) {
+      // Gambar memenuhi syarat, lanjutkan dengan pengiriman data
+      let form_data = new FormData();
+      form_data.append("title_give", title);
+      form_data.append("file_give", file);
+      form_data.append("layout_give", layout); // Menambahkan nilai layout ke formData
+
+      $.ajax({
+        type: "POST",
+        url: "/adminpanel/posting",
+        data: form_data,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+          alert(response["msg"]);
+          window.location.reload();
+        },
+      });
+    } else {
+      alert("Ukuran gambar harus minimal 1300px lebar dan 900px tinggi");
+    }
+  };
+
+  image.onerror = function () {
+    alert(
+      "Gagal memuat gambar. Pastikan file yang dipilih adalah gambar yang valid."
+    );
+  };
 }
 
 function listing() {
@@ -100,6 +117,14 @@ function listing() {
             <a href="/adminpanel/posting/${num}" class="btn btn-success">
               <i class="bi bi-search"></i>          
             </a>
+            <button
+              type="button"
+              class="btn btn-warning"
+              data-bs-toggle="modal"
+              data-bs-target="#editdataDetail"
+              onclick="updatePost('${num}')">
+              <i class="bi bi-pencil-square"></i>
+            </button>
             <button class="btn btn-danger" onclick="deletePost('${num}')">
               <i class="bi bi-trash3-fill"></i>
             </button>
@@ -107,6 +132,57 @@ function listing() {
         </tr>
         `;
         $("#cards-box").append(temp_html);
+      }
+    },
+  });
+}
+
+function updatePost(num) {
+  $.ajax({
+    type: "GET",
+    url: `/adminpanel/get-posting/${num}`,
+    success: function (response) {
+      if (response.result === "success") {
+        let post = response.post;
+        $("#input-title-edit").val(post.title);
+        $("#layout-select-edit").val(post.layout);
+
+        // Set nomor posting pada tombol "Simpan Perubahan"
+        $("#update-post-button").attr("onclick", `saveChanges(${num})`);
+
+        // Munculkan modal edit
+        $("#editdataDetail").modal("show");
+      } else {
+        alert(response.msg);
+      }
+    },
+  });
+}
+
+function saveChanges(num) {
+  let title = $("#input-title-edit").val();
+  let newImage = $("#input-file-edit")[0].files[0];
+  let layout = $("#layout-select-edit").val();
+
+  let formData = new FormData();
+  formData.append("title", title);
+  formData.append("layout", layout);
+
+  if (newImage) {
+    formData.append("file_give", newImage);
+  }
+
+  $.ajax({
+    type: "POST",
+    url: `/adminpanel/update-posting/${num}`,
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function (response) {
+      if (response.result === "success") {
+        window.location.reload();
+      } else {
+        alert(response.msg);
       }
     },
   });
@@ -139,14 +215,13 @@ function gallery() {
         let colSize = card[i]["layout"] || 12; // Default menjadi 6 jika colSize tidak ada
         let temp_html = `
           <div class="col-md-${colSize} mb-4 aos-init aos-animate" data-aos="flip-down">
-            <a href="/">
-              <div>
-                <img class="img-fluid" src="../${file}" alt="" height="100%">
-              </div>
-            </a>
-          </div>
+          <a href="/">
+            <div class="img-area">
+              <img class="img-fluid" src="../static/${file}" alt="" height="50%">
+            </div>
+          </a>
+        </div>        
         `;
-
         // Tambahkan elemen kolom ke `currentRowHtml` dan tambahkan jumlah kolom saat ini
         currentRowHtml += temp_html;
         currentColCount += colSize;
@@ -174,47 +249,16 @@ function detail_post(num) {
   $.ajax({
     type: "GET",
     url: `/adminpanel/posting/${num}`, // Menggunakan URL yang sesuai dengan rute Flask yang baru
-    success: function (response) {
-      // if (response["result"] === "success") {
-      console.log("berhasil");
-      // let card = response["post_detail"];
-      // for (let i = 0; i < card.length; i++) {
-      //   let title = card[i]["title"];
-      //   let file = card[i]["file"];
-      //   let num = card[i]["num"];
-      //   let layout = card[i]["layout"];
-      //   let temp_html = `
-      //     <tr>
-      //     <td scope="row">${i + 1}</td>
-      //     <td>${title}</td>
-      //     <td>
-      //       <img
-      //         src="../static/${file}"
-      //         class="img-fluid data-foto"
-      //       />
-      //     </td>
-      //     <td>${layout}</td>
-      //     <td>
-      //       <button class="btn btn-danger" onclick="deletePost('${num}')">
-      //         <i class="bi bi-trash3-fill"></i>
-      //       </button>
-      //     </td>
-      //   </tr>
-      //   `;
-      //   $("#cards-box").append(temp_html);
-      // }
-      // } else {
-      //   alert("Gagal mengambil detail posting!");
-      // }
-    },
+    success: function (response) {},
   });
 }
 
 function detail_posting(num) {
+  let title = $("#input-title-detail").val().trim();
   let file = $("#input-file-detail").prop("files")[0];
   let layout = $("#layout-select-detail").val(); // Ambil nilai dropdown
 
-  if (!file || !layout) {
+  if (!file || !layout || !title) {
     alert("Mohon lengkapi data dengan benar");
     return;
   }
@@ -233,6 +277,7 @@ function detail_posting(num) {
 
   // Membuat objek formData
   let form_data = new FormData();
+  form_data.append("title_give", title); // Menambahkan nilai layout ke formData
   form_data.append("file_give", file);
   form_data.append("layout_give", layout); // Menambahkan nilai layout ke formData
 
@@ -247,4 +292,26 @@ function detail_posting(num) {
       window.location.reload();
     },
   });
+}
+
+function deletePost_detail(num) {
+  if (confirm("Apakah Anda yakin ingin menghapus foto detail ini?")) {
+    $.ajax({
+      type: "POST",
+      url: "/adminpanel/delete-post-detail/" + num, // Sesuaikan dengan URL endpoint Anda
+      success: function (response) {
+        if (response.result === "success") {
+          // Hapus baris tabel dari DOM jika berhasil
+          $(`tr[data-num="${num}"]`).remove();
+          alert(response.msg); // Tampilkan pesan sukses
+          window.location.reload();
+        } else {
+          alert(response.msg); // Tampilkan pesan error
+        }
+      },
+      error: function () {
+        alert("Terjadi kesalahan saat menghapus foto detail.");
+      },
+    });
+  }
 }

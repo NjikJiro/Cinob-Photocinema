@@ -57,7 +57,16 @@
             class="d-inline-block align-text-top"
         /></a>
         <div class="justify-content-end" id="navbarNav">
-          <ul class="navbar-nav">
+          <ul class="navbar-nav" style="gap: 10px">
+            <li class="nav-item">
+              <a
+                target="_blank"
+                href="/"
+                class="nav-link main-button-cinob btn px-4 rounded-pill"
+                >Lihat Situs</a
+              >
+            </li>
+
             <!-- Tombol Log Out -->
             <li class="nav-item">
               <a
@@ -137,7 +146,10 @@
                 </td>
                 <td>{{item.layout}}</td>
                 <td>
-                  <button class="btn btn-danger" onclick="">
+                  <button
+                    class="btn btn-danger"
+                    onclick="deletePost_detail({{ item.num }})"
+                  >
                     <i class="bi bi-trash3-fill"></i>
                   </button>
                 </td>
@@ -149,7 +161,7 @@
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Tambah Data -->
     <div
       class="modal fade"
       id="tambahdataDetail"
@@ -170,15 +182,16 @@
           </div>
           <div class="modal-body">
             <!-- Input Judul -->
-            <!-- <div class="mb-3">
-                <label for="judul" class="form-label">Judul</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="input-title"
-                  autocomplete="off"
-                />
-              </div> -->
+            <div class="mb-3">
+              <label for="judul" class="form-label">Judul</label>
+              <input
+                type="text"
+                class="form-control"
+                id="input-title-detail"
+                autocomplete="off"
+              />
+            </div>
+            <p class="text-body-tertiary footnote">*Contoh Judul: detail-1</p>
 
             <!-- Input Gambar -->
             <div class="mb-3">
@@ -194,9 +207,9 @@
               <label for="layout-select">Jenis Layout</label>
               <select class="form-control" id="layout-select-detail">
                 <option value="">Pilih</option>
-                <option value="12">Penuh Baris landscape</option>
-                <option value="6">Setengah Baris landscape</option>
-                <option value="4">Sepertiga Baris atau setengah</option>
+                <option value="8">Landscape</option>
+                <option value="4">Potrait</option>
+                <option value="12">Full Landscape</option>
               </select>
             </div>
           </div>

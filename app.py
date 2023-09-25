@@ -48,9 +48,16 @@ def team():
     return render_template('team.html')
 
 
-@app.route('/gallery2', methods=['GET'])
+@app.route('/gallery/2', methods=['GET'])
 def gallery2():
     return render_template('gallery2.html')
+
+
+@app.route('/gallery/2/detail-<title>', methods=['GET'])
+def gallery_detail(title):
+    post = db.product.find_one({'title': title}, {'_id': False})
+    # tulis kode disini
+    # dapatkan data dari product_detail
 
 
 @app.route('/faq', methods=['GET'])
@@ -159,6 +166,7 @@ def dashboard():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({'username': payload.get('id')})
+
         return render_template("adminpanel.html", user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="Sesi login kamu telah kadaluwarsa"))
@@ -206,6 +214,7 @@ def delete_post():
 
         # Hapus post dari database
         db.product.delete_one({'num': int(num_receive)})
+        db.product_detail.delete_many({'folder': post.get('folder')})
         return jsonify({'msg': 'hapus berhasil!'})
     else:
         return jsonify({'msg': 'post tidak ditemukan'})
@@ -268,6 +277,74 @@ def posting():
         return redirect(url_for('dashboard'))
 
 
+@app.route('/adminpanel/update-posting/<int:num>', methods=['POST'])
+def update_posting(num):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+
+        title = request.form.get('title')
+        layout = request.form.get('layout')
+
+        if "file_give" in request.files:
+            new_image = request.files['file_give']
+
+            old_post = db.product.find_one({'num': num})
+            old_image_path = old_post.get('file')
+
+            if new_image:
+                # Lakukan penyimpanan file gambar yang baru
+                extension = new_image.filename.split(
+                    '.')[-1]  # Ambil ekstensi dengan benar
+                filename = f'static/img/detail-{num}/{title}.{extension}'
+                new_image.save(filename)
+
+                new_image_path = f'img/detail-{num}/{title}.{extension}'
+                db.product.update_one({'num': num}, {
+                                      '$set': {'title': title, 'layout': layout, 'file': new_image_path}})
+
+                # Hapus gambar yang lama
+                if old_image_path:
+                    old_image_file = os.path.join('static', old_image_path)
+                    if os.path.exists(old_image_file):
+                        os.remove(old_image_file)
+
+        else:
+            # Jika tidak ada file yang diunggah, tetap perbarui title dan layout
+            db.product.update_one(
+                {'num': num}, {'$set': {'title': title, 'layout': layout}})
+
+        return jsonify({'result': 'success', 'msg': 'Data telah diperbarui'})
+
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home'))
+
+
+@app.route('/adminpanel/get-posting/<int:num>', methods=['GET'])
+def get_posting(num):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+
+        post = db.product.find_one({'num': num}, {'_id': False})
+
+        if posting:
+            return jsonify({'result': 'success', 'post': post})
+        else:
+            return jsonify({'result': 'error', 'msg': 'Posting tidak ditemukan'}), 404
+
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home'))
+
+
 @app.route('/adminpanel/posting/<int:num>', methods=['GET'])
 def detail_post(num):
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -303,7 +380,7 @@ def detail_posting(num):
         # data input
         count = db.product_detail.count_documents({})
         num = count + 1
-        title_receive = f'detail-{num}'
+        title_receive = request.form.get('title_give')
         file = request.files['file_give']
         layout_receive = request.form.get('layout_give')
         num_folder = post.get('folder')
@@ -330,32 +407,30 @@ def detail_posting(num):
         return redirect(url_for('home'))
 
 
-# @app.route('/get-posts-detail/<int:num>', methods=['GET'])
-# def get_post_detail(num):
-#     token_receive = request.cookies.get(TOKEN_KEY)
-#     try:
-#         payload = jwt.decode(
-#             token_receive,
-#             SECRET_KEY,
-#             algorithms=['HS256']
-#         )
-#         post = db.product.find_one({'num': num}, {'_id': False})
-#         num_folder = post.get('folder')
-#         post_detail = list(db.product_detail.find(
-#             {'folder': num_folder}, {'_id': False}))
+@app.route('/adminpanel/delete-post-detail/<int:num>', methods=['POST'])
+def delete_post_detail(num):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive,
+            SECRET_KEY,
+            algorithms=['HS256']
+        )
+        detail = db.product_detail.find_one({'num': num})
 
-#         if post_detail:
-#             # return jsonify({
-#             #     'result': 'success',
-#             #     'post_detail': post_detail
-#             # })
-#             count = 1
-#             return render_template('detail.html', post_detail=post_detail, post=post, count=count)
-#         else:
-#             return jsonify({'result': 'error', 'msg': 'Produk tidak ditemukan'}), 404
+        if detail:
+            file_path = os.path.join('static', detail['file'])
 
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return jsonify({'result': 'error', 'msg': 'Token tidak valid'}), 401
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+            db.product_detail.delete_one({'num': num})
+
+            return jsonify({'msg': 'File detail telah dihapus', 'result': 'success'})
+        else:
+            return jsonify({'msg': 'File detail tidak ditemukan', 'result': 'error'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home'))
 
 
 if __name__ == '__main__':

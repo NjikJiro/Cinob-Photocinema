@@ -109,3 +109,103 @@ def posting():
         return jsonify({'msg': 'data telah ditambahkan'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('dashboard'))
+
+
+@app.route('/get-posts-detail/<int:num>', methods=['GET'])
+  def get_post_detail(num):
+      token_receive = request.cookies.get(TOKEN_KEY)
+      try:
+          payload = jwt.decode(
+              token_receive,
+              SECRET_KEY,
+              algorithms=['HS256']
+          )
+          post = db.product.find_one({'num': num}, {'_id': False})
+          num_folder = post.get('folder')
+          post_detail = list(db.product_detail.find(
+              {'folder': num_folder}, {'_id': False}))
+
+         if post_detail:
+             # return jsonify({
+             #     'result': 'success',
+             #     'post_detail': post_detail
+             # })
+             count = 1
+             return render_template('detail.html', post_detail=post_detail, post=post, count=count)
+         else:
+             return jsonify({'result': 'error', 'msg': 'Produk tidak ditemukan'}), 404
+
+     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+         return jsonify({'result': 'error', 'msg': 'Token tidak valid'}), 401
+         
+
+    <!-- Modal Edit Data -->
+    <div
+      class="modal fade"
+      id="editdataDetail"
+      tabindex="-1"
+      aria-labelledby="editdataDetail"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="editdataModal">Edit Data</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Input Judul -->
+            <div class="mb-3">
+              <label for="judul" class="form-label">Judul</label>
+              <input
+                type="text"
+                class="form-control"
+                id="input-title-detail"
+                autocomplete="off"
+              />
+            </div>
+            <p class="text-body-tertiary footnote">*Contoh Judul: detail-1</p>
+
+            <!-- Input Gambar -->
+            <div class="mb-3">
+              <label for="foto" class="form-label">Foto</label>
+              <input class="form-control" type="file" id="input-file-detail" />
+            </div>
+            <p class="text-body-tertiary footnote">
+              *Input gambar detail lebih banyak
+            </p>
+
+            <!-- input dropdown -->
+            <div class="form-group">
+              <label for="layout-select">Jenis Layout</label>
+              <select class="form-control" id="layout-select-detail">
+                <option value="">Pilih</option>
+                <option value="12">Penuh Baris landscape</option>
+                <option value="6">Setengah Baris landscape</option>
+                <option value="4">Sepertiga Baris atau setengah</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-dark"
+              onclick="detail_posting(num)"
+            >
+              Simpan Perubahan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+- masalah pada halaman user
+1. pada gallery 2 layout masih kurang rapi
+2. pada gallery 2 belum dibuat halaman klik ke halaman foto detail
+

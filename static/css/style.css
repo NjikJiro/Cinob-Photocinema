@@ -1,94 +1,100 @@
-body{
-    font-family: 'Poppins', sans-serif;
+body {
+  font-family: "Poppins", sans-serif;
 }
-.warnavbar{
-    background-color: black;
+.warnavbar {
+  background-color: black;
 }
 .banner-image {
-    background-image:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
-    url('../img/banner.png');
-    background-size: cover;
-    background-position: center;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url("../img/banner.png");
+  background-size: cover;
+  background-position: center;
 }
 .parallax1 {
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url('../img/banner.png');
-    min-height: 400px;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url("../img/banner.png");
+  min-height: 400px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.testimonial-pic{
-    height: 50px;
-    width: 50px;
-    border-radius: 100%;
+.testimonial-pic {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
 }
-.lengkap{
-    color: white;
-    text-decoration: none;
+.lengkap {
+  color: white;
+  text-decoration: none;
 }
-ul{
-    list-style: none;
+ul {
+  list-style: none;
 }
-.footer-list>li>a{
-    color: white;
-    text-decoration: none;
+.footer-list > li > a {
+  color: white;
+  text-decoration: none;
 }
-.bg-blacki{
-    background-color: rgb(11, 11, 11);
+.bg-blacki {
+  background-color: rgb(11, 11, 11);
 }
 
 /* Hover */
-.testimonial-card:hover{
-    background-color: #f8f8f8;
+.testimonial-card:hover {
+  background-color: #f8f8f8;
 }
-.bi-facebook:hover{
-    color:rgb(24, 119, 242);
+.bi-facebook:hover {
+  color: rgb(24, 119, 242);
 }
-.bi-instagram:hover{
-    color: #bc2a8d;
+.bi-instagram:hover {
+  color: #bc2a8d;
 }
-.bi-linkedin:hover{
-    color: #0072b1;
+.bi-linkedin:hover {
+  color: #0072b1;
 }
-.bi-youtube:hover{
-    color: #f02e27;
+.bi-youtube:hover {
+  color: #f02e27;
 }
-.ragdoll-tag{
-    cursor: pointer;
-    color: white;
-    text-decoration: none;
+.ragdoll-tag {
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
 }
 
 /* Gallery */
-.img-area{
-    color: rgba(255, 255, 255, 0);
-    position: relative;
+.img-area {
+  color: rgba(255, 255, 255, 0);
+  position: relative;
 }
-.img-area:after{
-    width: 100%;
-    position: absolute;
-    left: 0;
-    content: '';
-    height: 100%;
-    top: 0;
-    transition: 2s ease;
+.img-area:after {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  content: "";
+  height: 100%;
+  top: 0;
+  transition: 2s ease;
 }
-.img-area:hover:after{
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+.img-area:hover:after {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
 }
-
 
 /* Contact */
-.bread-item{
-    text-decoration: none;
-    color: black;
+.bread-item {
+  text-decoration: none;
+  color: black;
 }
-.email-cinob{
-    text-decoration: none;
-    color: black;
+.email-cinob {
+  text-decoration: none;
+  color: black;
 }
 /* .map-icon{
     color: white;
@@ -99,49 +105,59 @@ ul{
     border-radius: 100%;
 } */
 
-.login-page{
-    min-height: 100vh;
-    background-color: black;
+.login-page {
+  min-height: 100vh;
+  background-color: black;
 }
 .banner-image-login {
-    background-image:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url('../img/banner.png');
-    background-size: cover;
-    background-position: center;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url("../img/banner.png");
+  background-size: cover;
+  background-position: center;
 }
-.btn-cinob{
-    background-color: white;
-    color: black;
-    padding-top: 15px;
-    padding-bottom: 15px;
+.btn-cinob {
+  background-color: white;
+  color: black;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
-.btn-cinob:hover{
-    border: 1px solid white;
-    background-color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
-    padding-top: 15px;
-    padding-bottom: 15px;
+.btn-cinob:hover {
+  border: 1px solid white;
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
-.dekl{
-    color: #545454;
+.dekl {
+  color: #545454;
 }
 
 /* Admin Panel */
-.logout-button-cinob{
-    background-color: black;
-    border: 1px solid white;
-    color: white;
+.logout-button-cinob {
+  background-color: black;
+  border: 1px solid white;
+  color: white;
 }
-.logout-button-cinob:hover{
-    
-    color: black;
-    background-color: white;
+.logout-button-cinob:hover {
+  color: black;
+  background-color: white;
 }
-.data-foto{
-    max-height: 200px;
+.main-button-cinob {
+  background-color: white;
+  color: black;
 }
-.footnote{
-    font-size: small;
+.main-button-cinob:hover {
+  background-color: black;
+  border: 1px solid white;
+  color: white;
 }
-
+.data-foto {
+  max-height: 200px;
+}
+.footnote {
+  font-size: small;
+}

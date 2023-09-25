@@ -213,9 +213,10 @@ function gallery() {
       for (let i = 0; i < card.length; i++) {
         let file = card[i]["file"];
         let colSize = card[i]["layout"] || 12; // Default menjadi 6 jika colSize tidak ada
+        let title = card[i]["title"];
         let temp_html = `
           <div class="col-md-${colSize} mb-4 aos-init aos-animate" data-aos="flip-down">
-          <a href="/">
+          <a href="/gallery/2/detail-${title}">
             <div class="img-area">
               <img class="img-fluid" src="../static/${file}" alt="" height="50%">
             </div>
@@ -314,4 +315,45 @@ function deletePost_detail(num) {
       },
     });
   }
+}
+
+// progress hari ini
+function gallery_detail(title) {
+  $.ajax({
+    type: "GET",
+    url: `/get-post-detail/${title}`,
+    success: function (response) {
+      let post = response["post"];
+      let currentRowHtml = '<div class="row">'; // Mulai dengan satu baris baru
+      let currentColCount = 0; // Menghitung jumlah kolom dalam baris saat ini
+
+      for (let i = 0; i < post.length; i++) {
+        let file = card[i]["file"];
+        let colSize = card[i]["layout"] || 12; // Default menjadi 6 jika colSize tidak ada
+        let temp_html = `
+          <div class="col-md-${colSize} mb-4">
+            <img class="img-fluid" src="../static/${file}" alt="" height="100%">
+          </div>        
+        `;
+        // Tambahkan elemen kolom ke `currentRowHtml` dan tambahkan jumlah kolom saat ini
+        currentRowHtml += temp_html;
+        currentColCount += colSize;
+
+        // Cek apakah total kolom melebihi 12
+        if (currentColCount >= 12) {
+          // Jika total kolom melebihi 12, tambahkan `currentRowHtml` ke `#cards-box` dan reset `currentRowHtml` dan jumlah kolom
+          currentRowHtml += "</div>"; // Tutup baris saat ini
+          $("#cards-box").append(currentRowHtml);
+          currentRowHtml = '<div class="row">'; // Mulai dengan baris baru
+          currentColCount = 0; // Reset jumlah kolom
+        }
+      }
+
+      // Pastikan untuk menambahkan baris terakhir jika belum mencapai 12 kolom
+      if (currentColCount > 0) {
+        currentRowHtml += "</div>"; // Tutup baris saat ini
+        $("#cards-box").append(currentRowHtml);
+      }
+    },
+  });
 }

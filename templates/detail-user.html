@@ -3,6 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <!-- akhir link jquery -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,11 +22,28 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../static/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="../static/img/cinob.png" />
-    <title>Detail A | Cinob Photocinema</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='img/cinob.png') }}"
+    />
+    <title>Detail | Cinob Photocinema</title>
+    <script type="">
+      let title = "{{ post.title }}";
+
+      $(document).ready(function () {
+        gallery_detail(title);
+      });
+    </script>
   </head>
   <body>
     <!-- Navbar -->
@@ -25,7 +51,7 @@
       <div class="container">
         <a href="/" class="navbar-brand fw-bold">
           <img
-            src="../static/img/logo.png"
+            src="{{ url_for('static', filename='img/logo.png') }}"
             alt="Logo"
             width="100"
             height="auto"
@@ -69,7 +95,7 @@
           <a href="/gallery" class="bread-item">Gallery</a>
         </li>
         <li class="breadcrumb-item active fw-semibold" aria-current="page">
-          Detail A
+          Detail-{{ post.title }}
         </li>
       </ol>
       <div class="container mt-4" id="cards-box"></div>
@@ -82,7 +108,7 @@
           <div class="col-md-4">
             <img
               class="img-fluid mb-2 mt-3"
-              src="../static/img/logo.png"
+              src="{{ url_for('static', filename='img/logo.png') }}"
               alt=""
               height="100%"
             />
@@ -130,7 +156,7 @@
       </p>
     </div>
 
-    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
       AOS.init();

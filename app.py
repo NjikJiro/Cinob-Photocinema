@@ -52,12 +52,37 @@ def team():
 def gallery2():
     return render_template('gallery2.html')
 
+# progress hari ini
+
 
 @app.route('/gallery/2/detail-<title>', methods=['GET'])
 def gallery_detail(title):
     post = db.product.find_one({'title': title}, {'_id': False})
     # tulis kode disini
-    # dapatkan data dari product_detail
+    # num_folder = post.get('folder')
+    # detail = list(db.product_detail.find(
+    #     {'folder': num_folder}, {'_id': False}))
+
+    return render_template('detail-user.html', post=post)
+
+
+@app.route('/get-post-detail/<title>', methods=['GET'])
+def get_detail(title):
+    post = db.product.find_one({'folder': title}, {'_id': False})
+
+    if post:
+        num_folder = post.get('folder')
+        detail = list(db.product_detail.find(
+            {'folder': num_folder}, {'_id': False}))
+        # tulis kode disini
+
+        if detail:
+            return jsonify({'result': 'success', 'post': detail})
+        else:
+            return jsonify({'result': 'error', 'msg': 'Posting tidak ditemukan'}), 404
+    else:
+        return jsonify({'result': 'error', 'msg': 'Posting tidak ditemukan'}), 404
+# akhir progress
 
 
 @app.route('/faq', methods=['GET'])
@@ -269,7 +294,8 @@ def posting():
             'title': title_receive,
             'file': DBfile,
             'folder': detail,
-            'layout': layout_receive  # Simpan jenis layout
+            'layout': layout_receive,  # Simpan jenis layout
+            #  'url':
         }
         db.product.insert_one(doc)
         return jsonify({'msg': 'data telah ditambahkan', 'result': 'success'})

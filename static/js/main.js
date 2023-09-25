@@ -321,39 +321,35 @@ function deletePost_detail(num) {
 function gallery_detail(title) {
   $.ajax({
     type: "GET",
-    url: `/get-post-detail/${title}`,
+    url: `/gallery/2/detail-${title}`,
     success: function (response) {
-      let post = response["post"];
-      let currentRowHtml = '<div class="row">'; // Mulai dengan satu baris baru
-      let currentColCount = 0; // Menghitung jumlah kolom dalam baris saat ini
-
-      for (let i = 0; i < post.length; i++) {
-        let file = card[i]["file"];
-        let colSize = card[i]["layout"] || 12; // Default menjadi 6 jika colSize tidak ada
-        let temp_html = `
-          <div class="col-md-${colSize} mb-4">
-            <img class="img-fluid" src="../static/${file}" alt="" height="100%">
-          </div>        
-        `;
-        // Tambahkan elemen kolom ke `currentRowHtml` dan tambahkan jumlah kolom saat ini
-        currentRowHtml += temp_html;
-        currentColCount += colSize;
-
-        // Cek apakah total kolom melebihi 12
-        if (currentColCount >= 12) {
-          // Jika total kolom melebihi 12, tambahkan `currentRowHtml` ke `#cards-box` dan reset `currentRowHtml` dan jumlah kolom
-          currentRowHtml += "</div>"; // Tutup baris saat ini
-          $("#cards-box").append(currentRowHtml);
-          currentRowHtml = '<div class="row">'; // Mulai dengan baris baru
-          currentColCount = 0; // Reset jumlah kolom
-        }
-      }
-
-      // Pastikan untuk menambahkan baris terakhir jika belum mencapai 12 kolom
-      if (currentColCount > 0) {
-        currentRowHtml += "</div>"; // Tutup baris saat ini
-        $("#cards-box").append(currentRowHtml);
-      }
+      // let post = response["post"];
+      // let currentRowHtml = '<div class="row">';
+      // let currentColCount = 0;
+      // for (let i = 0; i < post.length; i++) {
+      //   let file = post[i]["file"];
+      //   let colSize = post[i]["layout"] || 12;
+      //   let title = post[i]["title"];
+      //   let src = `{{ url_for('static', filename=${file}) }}`;
+      //   let temp_html = `
+      //     <div class="col-md-${colSize} mb-4">
+      //     <h1>${title}</h1>
+      //       <img class="img-fluid" src="${src}" alt="" height="100%">
+      //     </div>
+      //   `;
+      //   currentRowHtml += temp_html;
+      //   currentColCount += colSize;
+      //   if (currentColCount >= 12) {
+      //     currentRowHtml += "</div>";
+      //     $("#cards-box").append(currentRowHtml);
+      //     currentRowHtml = '<div class="row">';
+      //     currentColCount = 0;
+      //   }
+      // }
+      // if (currentColCount > 0) {
+      //   currentRowHtml += "</div>"; // Tutup baris saat ini
+      //   $("#cards-box").append(currentRowHtml);
+      // }
     },
   });
 }

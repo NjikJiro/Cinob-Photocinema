@@ -38,6 +38,7 @@
     />
     <title>Detail | Cinob Photocinema</title>
     <script type="">
+      let num = "{{ post.num }}";
       let title = "{{ post.title }}";
 
       $(document).ready(function () {
@@ -98,7 +99,22 @@
           Detail-{{ post.title }}
         </li>
       </ol>
-      <div class="container mt-4" id="cards-box"></div>
+      <div class="container mt-4" id="cards-box">
+        <div class="row">
+          {% for item in detail %} {% set colSize = item['layout'] or 12 %}
+          <div class="col-md-{{ colSize }} mb-4">
+            <img
+              class="img-fluid"
+              src="{{ url_for('static', filename=item['file']) }}"
+              alt=""
+              height="100%"
+            />
+          </div>
+          {% if loop.index % 3 == 0 %} {# Tambahkan kondisi untuk setiap 3
+          elemen #}
+        </div>
+        <div class="row">{% endif %} {% endfor %}</div>
+      </div>
     </div>
 
     <!-- Footer -->

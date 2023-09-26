@@ -58,30 +58,31 @@ def gallery2():
 @app.route('/gallery/2/detail-<title>', methods=['GET'])
 def gallery_detail(title):
     post = db.product.find_one({'title': title}, {'_id': False})
-    # tulis kode disini
-    # num_folder = post.get('folder')
-    # detail = list(db.product_detail.find(
-    #     {'folder': num_folder}, {'_id': False}))
+    post_num = post.get('num')
 
-    return render_template('detail-user.html', post=post)
-
-
-@app.route('/get-post-detail/<title>', methods=['GET'])
-def get_detail(title):
-    post = db.product.find_one({'folder': title}, {'_id': False})
-
-    if post:
+    if post_num:
         num_folder = post.get('folder')
+
         detail = list(db.product_detail.find(
             {'folder': num_folder}, {'_id': False}))
-        # tulis kode disini
 
-        if detail:
-            return jsonify({'result': 'success', 'post': detail})
-        else:
-            return jsonify({'result': 'error', 'msg': 'Posting tidak ditemukan'}), 404
-    else:
-        return jsonify({'result': 'error', 'msg': 'Posting tidak ditemukan'}), 404
+    return render_template('detail-user.html', post=post, detail=detail)
+
+
+# @app.route('/get-post-detail/<int:num>', methods=['GET'])
+# def get_detail(num):
+#     post = db.product.find_one({'num': num}, {'_id': False})
+
+#     if post:
+#         num_folder = post.get('folder')
+
+#         detail = list(db.product_detail.find(
+#             {'folder': num_folder}, {'_id': False}))
+#         print(detail)
+#         # tulis kode disini
+#         return render_template('detail-user.html', detail=detail, post=post)
+#     else:
+#         return jsonify({'result': 'error', 'msg': 'Posting tidak ditemukan'}), 404
 # akhir progress
 
 

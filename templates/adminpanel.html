@@ -66,16 +66,16 @@
               >
               
             </li>
-            <li>
-              <button
-            type="button"
-            class="nav-link main-button-cinob btn px-4 rounded-pill"
-            data-bs-toggle="modal"
-            data-bs-target="#tambahAdmin"
-          >
-            + Admin
-          </button>
+
+            <li class="nav-item">
+              <a
+                href="/register"
+                class="nav-link main-button-cinob btn px-4 rounded-pill"
+                >+ Admin</a
+              >
+              
             </li>
+           
             <!-- Tombol Log Out -->
             <li class="nav-item">
               <a
@@ -259,51 +259,7 @@
     </div>
 
     <!-- Modal tambah Admin -->
-    <div
-      class="modal fade"
-      id="tambahAdmin"
-      tabindex="-1"
-      aria-labelledby="tambahAdmin"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="tambahAdmin">Tambah Admin</h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <!-- Input Username -->
-            <div class="mb-3">
-              <label  class="form-label">Username</label>
-              <input type="text" class="form-control">
-            </div>
 
-            <!-- Input Password -->
-            <div class="mb-3">
-              <label  class="form-label">Password</label>
-              <input type="password" class="form-control">
-            </div>
-
-            <!-- Konfirmasi password -->
-            <div class="mb-3">
-              <label  class="form-label">Konfirmasi Password</label>
-              <input type="password" class="form-control">
-            </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-dark" onclick="">
-              Simpan Perubahan
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Script -->
     <script src="../static/js/bootstrap.min.js"></script>

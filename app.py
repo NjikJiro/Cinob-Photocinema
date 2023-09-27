@@ -52,7 +52,10 @@ def team():
 def gallery2():
     return render_template('gallery2.html')
 
-# progress hari ini
+
+@app.route('/register', methods=['GET'])
+def register():
+    return render_template('register.html')
 
 
 @app.route('/gallery/2/detail-<title>', methods=['GET'])

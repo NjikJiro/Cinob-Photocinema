@@ -465,5 +465,17 @@ def register_save():
     return jsonify({'result': 'success'})
 
 
+@app.route('/check-username', methods=['POST'])
+def check_username():
+    username_check = request.form.get('username_check')
+
+    user = db.users.find_one({'username': username_check})
+
+    if user:
+        return jsonify({'exists': True})
+    else:
+        return jsonify({'exists': False})
+
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

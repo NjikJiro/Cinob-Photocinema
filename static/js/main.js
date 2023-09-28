@@ -330,24 +330,74 @@ function sign_up() {
   let password = $("#password_reg").val();
   let password2 = $("#password2_reg").val();
 
+  let helpUsername = $("#help-username");
+  let helpPassword = $("#help-password");
+  let helpPassword2 = $("#help-password2");
+
   if (!username || !password || !password2) {
     alert("Mohon isi data dengan lengkap");
     return;
   }
-
-  //kode validation
-
-  // akhir validation
+  // Periksa apakah username sudah digunakan
   $.ajax({
     type: "POST",
-    url: "/register-save",
+    url: "/check-username",
     data: {
-      username_give: username,
-      password_give: password,
+      username_check: username,
     },
     success: function (response) {
-      alert("user baru telah ditambahkan");
-      window.location.replace("/adminpanel/register");
+      if (response.exists) {
+        helpUsername
+          .text("Username sudah digunakan. Silakan pilih username lain!")
+          .addClass("text-danger")
+          .removeClass("text-success");
+        helpUsername.focus();
+        return;
+      } else {
+        helpUsername
+          .removeClass("text-danger")
+          .text("username tersedia")
+          .addClass("text-success");
+        //kode validation password
+        if (!is_password(password)) {
+          helpPassword
+            .text(
+              "For your password, please enter 8-20 English characters, numbers, or the following special characters (!@#$%^&*)"
+            )
+            .addClass("text-danger")
+            .removeClass("text-success");
+          helpPassword.focus();
+          return;
+        } else {
+          helpPassword
+            .text("password tersedia")
+            .removeClass("text-danger")
+            .addClass("text-success");
+
+          if (password2 !== password) {
+            helpPassword2
+              .text("kata sandi anda tidak cocok")
+              .addClass("text-danger");
+            inputPassword2.focus();
+            return;
+          } else {
+            helpPassword2.text("").removeClass("is-danger");
+          }
+        }
+        // akhir validation
+        $.ajax({
+          type: "POST",
+          url: "/register-save",
+          data: {
+            username_give: username,
+            password_give: password,
+          },
+          success: function (response) {
+            alert("User baru telah ditambahkan");
+            window.location.replace("/adminpanel/register");
+          },
+        });
+      }
     },
   });
 }

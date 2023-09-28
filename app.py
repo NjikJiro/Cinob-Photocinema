@@ -453,13 +453,13 @@ def register_save():
     password_hash = hashlib.sha256(
         password_receive.encode('utf-8')).hexdigest()
 
-    count = db.product.count_documents({})
+    count = db.users.count_documents({})
     num = count + 1
 
     doc = {
-        'num': num,
         'username': username_receive,
-        'password': password_hash
+        'password': password_hash,
+        'num': num
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
@@ -475,6 +475,12 @@ def check_username():
         return jsonify({'exists': True})
     else:
         return jsonify({'exists': False})
+
+
+@app.route('/get-users', methods=['GET'])
+def get_uers():
+    account = list(db.users.find({}, {'_id': False}))
+    return jsonify({'account': account})
 
 
 if __name__ == '__main__':

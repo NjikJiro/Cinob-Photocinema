@@ -351,7 +351,6 @@ function sign_up() {
           .text("Username sudah digunakan. Silakan pilih username lain!")
           .addClass("text-danger")
           .removeClass("text-success");
-        helpUsername.focus();
         return;
       } else {
         helpUsername
@@ -362,11 +361,10 @@ function sign_up() {
         if (!is_password(password)) {
           helpPassword
             .text(
-              "For your password, please enter 8-20 English characters, numbers, or the following special characters (!@#$%^&*)"
+              "Untuk kata sandi Anda, masukkan 8-20 karakter bahasa, angka, atau karakter khusus berikut (!@#$%^&*)"
             )
             .addClass("text-danger")
             .removeClass("text-success");
-          helpPassword.focus();
           return;
         } else {
           helpPassword
@@ -378,10 +376,9 @@ function sign_up() {
             helpPassword2
               .text("kata sandi anda tidak cocok")
               .addClass("text-danger");
-            inputPassword2.focus();
             return;
           } else {
-            helpPassword2.text("").removeClass("is-danger");
+            helpPassword2.text("").removeClass("text-danger");
           }
         }
         // akhir validation
@@ -410,4 +407,30 @@ function is_nickname(asValue) {
 function is_password(asValue) {
   var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
   return regExp.test(asValue);
+}
+
+function post_users() {
+  $.ajax({
+    type: "GET",
+    url: "/get-users",
+    data: {},
+    success: function (response) {
+      let account = response["account"];
+      for (let i = 0; i < account.length; i++) {
+        let username = account[i]["username"];
+        let temp_html = `
+          <tr>
+          <th scope="row">${i + 1}</th>
+          <td>${username}</td>
+          <td>
+            <button class="btn btn-danger" onclick="">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
+          </td>
+        </tr>
+        `;
+        $("#cards-box").append(temp_html);
+      }
+    },
+  });
 }

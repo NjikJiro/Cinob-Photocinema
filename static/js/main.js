@@ -317,39 +317,47 @@ function deletePost_detail(num) {
   }
 }
 
-// progress hari ini
 function gallery_detail(title) {
   $.ajax({
     type: "GET",
     url: `/gallery/2/detail-${title}`,
+    success: function (response) {},
+  });
+}
+
+function sign_up() {
+  let username = $("#Username_reg").val().trim();
+  let password = $("#password_reg").val();
+  let password2 = $("#password2_reg").val();
+
+  if (!username || !password || !password2) {
+    alert("Mohon isi data dengan lengkap");
+    return;
+  }
+
+  //kode validation
+
+  // akhir validation
+  $.ajax({
+    type: "POST",
+    url: "/register-save",
+    data: {
+      username_give: username,
+      password_give: password,
+    },
     success: function (response) {
-      // let post = response["post"];
-      // let currentRowHtml = '<div class="row">';
-      // let currentColCount = 0;
-      // for (let i = 0; i < post.length; i++) {
-      //   let file = post[i]["file"];
-      //   let colSize = post[i]["layout"] || 12;
-      //   let title = post[i]["title"];
-      //   let src = `{{ url_for('static', filename=${file}) }}`;
-      //   let temp_html = `
-      //     <div class="col-md-${colSize} mb-4">
-      //     <h1>${title}</h1>
-      //       <img class="img-fluid" src="${src}" alt="" height="100%">
-      //     </div>
-      //   `;
-      //   currentRowHtml += temp_html;
-      //   currentColCount += colSize;
-      //   if (currentColCount >= 12) {
-      //     currentRowHtml += "</div>";
-      //     $("#cards-box").append(currentRowHtml);
-      //     currentRowHtml = '<div class="row">';
-      //     currentColCount = 0;
-      //   }
-      // }
-      // if (currentColCount > 0) {
-      //   currentRowHtml += "</div>"; // Tutup baris saat ini
-      //   $("#cards-box").append(currentRowHtml);
-      // }
+      alert("user baru telah ditambahkan");
+      window.location.replace("/adminpanel/register");
     },
   });
+}
+
+function is_nickname(asValue) {
+  var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
+  return regExp.test(asValue);
+}
+
+function is_password(asValue) {
+  var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+  return regExp.test(asValue);
 }

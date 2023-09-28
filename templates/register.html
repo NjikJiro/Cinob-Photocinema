@@ -38,9 +38,7 @@
     />
     <title>Dashboard Admin | Cinob Photocinema</title>
     <script type="">
-      $(document).ready(function () {
-        listing();
-      });
+      $(document).ready(function () {});
     </script>
   </head>
   <body style="background-color: rgb(245, 245, 245)">
@@ -64,7 +62,6 @@
                 class="nav-link main-button-cinob btn px-4 rounded-pill"
                 >Lihat Situs</a
               >
-              
             </li>
             <!-- Tombol Log Out -->
             <li class="nav-item">
@@ -81,13 +78,14 @@
 
     <!-- Form Login -->
     <div class="container mt-4">
-
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/adminpanel" class="bread-item">Admin</a></li>
-            <li class="breadcrumb-item active fw-semibold" aria-current="page">
-              Register
-            </li>
-        </ol>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/adminpanel" class="bread-item">Admin</a>
+        </li>
+        <li class="breadcrumb-item active fw-semibold" aria-current="page">
+          Register
+        </li>
+      </ol>
     </div>
 
     <div class="container">
@@ -96,19 +94,32 @@
         <div class="col-md-6 bg-white shadow rounded py-3 px-3">
           <h4 class="ms-3 mb-3 text-center">Tambah Admin</h4>
           <div class="mb-3">
-            <label  class="form-label">Username</label>
-            <input type="text" class="form-control">
+            <label class="form-label fw-bold">Username</label>
+            <input type="text" class="form-control" id="Username_reg" />
           </div>
+          <p id="help-username" class="help">
+            username ini telah telah dipakai!
+          </p>
           <div class="mb-3">
-            <label  class="form-label">Password</label>
-            <input type="password" class="form-control">
+            <label class="form-label fw-bold">Password</label>
+            <input type="password" class="form-control" id="password_reg" />
           </div>
-          <div class="mb-5">
-            <label  class="form-label">Konfirmasi Password</label>
-            <input type="password" class="form-control">
+          <p id="help-password" class="help">
+            For your password, please enter 8-20 English characters, numbers, or
+            the following special characters (!@#$%^&*)
+          </p>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Konfirmasi Password</label>
+            <input type="password" class="form-control" id="password2_reg" />
           </div>
+          <p id="help-password2" class="mb-5 help">
+            Please enter in your password again
+          </p>
           <div class="d-grid gap-2 mb-3">
-            <button class="btn btn-dark py-3" type="button">Register</button>
+            <button class="btn btn-dark py-3" type="button" onclick="sign_up()">
+              Register
+            </button>
           </div>
         </div>
         <div class="col-md-3"></div>
@@ -135,7 +146,6 @@
     </div>
 
     <!-- Modal tambah data -->
-    
 
     <!-- Script -->
     <script src="../static/js/bootstrap.min.js"></script>

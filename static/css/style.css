@@ -161,3 +161,7 @@ ul {
 .footnote {
   font-size: small;
 }
+
+.help {
+  color: gray;
+}

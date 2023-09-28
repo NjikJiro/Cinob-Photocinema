@@ -222,6 +222,50 @@ def get_detail(title):
     else:
         return jsonify({'result': 'error', 'msg': 'Posting tidak ditemukan'}), 404
 
+@app.route('/get-post-detail/<int:num>', methods=['GET'])
+def get_detail(num):
+    post = db.product.find_one({'num': num}, {'_id': False})
+
+    if post:
+        num_folder = post.get('folder')
+
+        detail = list(db.product_detail.find(
+            {'folder': num_folder}, {'_id': False}))
+        print(detail)
+        # tulis kode disini
+        return render_template('detail-user.html', detail=detail, post=post)
+    else:
+        return jsonify({'result': 'error', 'msg': 'Posting tidak ditemukan'}), 404
+akhir progress
+
+  let post = response["post"];
+  let currentRowHtml = '<div class="row">';
+  let currentColCount = 0;
+  for (let i = 0; i < post.length; i++) {
+        let file = post[i]["file"];
+        let colSize = post[i]["layout"] || 12;
+        let title = post[i]["title"];
+        let src = `{{ url_for('static', filename=${file}) }}`;
+        let temp_html = `
+          <div class="col-md-${colSize} mb-4">
+          <h1>${title}</h1>
+            <img class="img-fluid" src="${src}" alt="" height="100%">
+          </div>
+        `;
+        currentRowHtml += temp_html;
+        currentColCount += colSize;
+        if (currentColCount >= 12) {
+          currentRowHtml += "</div>";
+          $("#cards-box").append(currentRowHtml);
+          currentRowHtml = '<div class="row">';
+          currentColCount = 0;
+        }
+      }
+      if (currentColCount > 0) {
+        currentRowHtml += "</div>"; // Tutup baris saat ini
+        $("#cards-box").append(currentRowHtml);
+      }
+
 
 - masalah pada halaman user
 1. pada gallery 2 layout masih kurang rapi

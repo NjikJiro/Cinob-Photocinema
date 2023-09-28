@@ -53,7 +53,7 @@ def gallery2():
     return render_template('gallery2.html')
 
 
-@app.route('/register', methods=['GET'])
+@app.route('/adminpanel/register', methods=['GET'])
 def register():
     return render_template('register.html')
 
@@ -70,23 +70,6 @@ def gallery_detail(title):
             {'folder': num_folder}, {'_id': False}))
 
     return render_template('detail-user.html', post=post, detail=detail)
-
-
-# @app.route('/get-post-detail/<int:num>', methods=['GET'])
-# def get_detail(num):
-#     post = db.product.find_one({'num': num}, {'_id': False})
-
-#     if post:
-#         num_folder = post.get('folder')
-
-#         detail = list(db.product_detail.find(
-#             {'folder': num_folder}, {'_id': False}))
-#         print(detail)
-#         # tulis kode disini
-#         return render_template('detail-user.html', detail=detail, post=post)
-#     else:
-#         return jsonify({'result': 'error', 'msg': 'Posting tidak ditemukan'}), 404
-# akhir progress
 
 
 @app.route('/faq', methods=['GET'])
@@ -461,6 +444,25 @@ def delete_post_detail(num):
             return jsonify({'msg': 'File detail tidak ditemukan', 'result': 'error'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home'))
+
+
+@app.route('/register-save', methods=['POST'])
+def register_save():
+    username_receive = request.form.get('username_give')
+    password_receive = request.form.get('password_give')
+    password_hash = hashlib.sha256(
+        password_receive.encode('utf-8')).hexdigest()
+
+    count = db.product.count_documents({})
+    num = count + 1
+
+    doc = {
+        'num': num,
+        'username': username_receive,
+        'password': password_hash
+    }
+    db.users.insert_one(doc)
+    return jsonify({'result': 'success'})
 
 
 if __name__ == '__main__':

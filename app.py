@@ -483,5 +483,17 @@ def get_uers():
     return jsonify({'account': account})
 
 
+@app.route('/delete-users', methods=['POST'])
+def delete_users():
+    num_receive = request.form['num_give']
+    account = db.users.find_one({'num': int(num_receive)})
+
+    if account:
+        db.users.delete_one({'num': int(num_receive)})
+        return jsonify({'msg': 'hapus berhasil!'})
+    else:
+        return jsonify({'msg': 'users tidak ditemukan'})
+
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

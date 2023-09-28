@@ -267,6 +267,7 @@ akhir progress
       }
 
 
-- masalah pada halaman user
+- masalah pada site
 1. pada gallery 2 layout masih kurang rapi
+2. membuat pesan confirm saat delete
 

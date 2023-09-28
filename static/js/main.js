@@ -418,12 +418,13 @@ function post_users() {
       let account = response["account"];
       for (let i = 0; i < account.length; i++) {
         let username = account[i]["username"];
+        let num = account[i]["num"];
         let temp_html = `
           <tr>
           <th scope="row">${i + 1}</th>
           <td>${username}</td>
           <td>
-            <button class="btn btn-danger" onclick="">
+            <button class="btn btn-danger" onclick="delete_users(${num})">
               <i class="bi bi-trash3-fill"></i>
             </button>
           </td>
@@ -431,6 +432,18 @@ function post_users() {
         `;
         $("#cards-box").append(temp_html);
       }
+    },
+  });
+}
+
+function delete_users(num) {
+  $.ajax({
+    type: "POST",
+    url: "/delete-users",
+    data: { num_give: num },
+    success: function (response) {
+      alert(response["msg"]);
+      window.location.reload();
     },
   });
 }

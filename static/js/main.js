@@ -79,7 +79,7 @@ function posting() {
         },
       });
     } else {
-      alert("Ukuran gambar harus minimal 1300px lebar dan 900px tinggi");
+      alert("Ukuran gambar harus minimal 1200px lebar dan 500px tinggi");
     }
   };
 
@@ -189,15 +189,19 @@ function saveChanges(num) {
 }
 
 function deletePost(num) {
-  $.ajax({
-    type: "POST",
-    url: "/adminpanel/delete-post",
-    data: { num_give: num },
-    success: function (response) {
-      alert(response["msg"]);
-      window.location.reload();
-    },
-  });
+  var confirmDelete = confirm("Apakah Anda yakin ingin menghapus posting ini?");
+
+  if (confirmDelete) {
+    $.ajax({
+      type: "POST",
+      url: "/adminpanel/delete-post",
+      data: { num_give: num },
+      success: function (response) {
+        alert(response["msg"]);
+        window.location.reload();
+      },
+    });
+  }
 }
 
 function gallery() {
@@ -256,23 +260,40 @@ function detail_posting(num) {
     return;
   }
 
-  // Membuat objek formData
-  let form_data = new FormData();
-  form_data.append("title_give", title); // Menambahkan nilai layout ke formData
-  form_data.append("file_give", file);
-  form_data.append("layout_give", layout); // Menambahkan nilai layout ke formData
+  // Membuat objek gambar untuk memeriksa ukuran
+  let image = new Image();
+  image.src = URL.createObjectURL(file);
 
-  $.ajax({
-    type: "POST",
-    url: `/adminpanel/posting/${num}`,
-    data: form_data,
-    contentType: false,
-    processData: false,
-    success: function (response) {
-      alert(response["msg"]);
-      window.location.reload();
-    },
-  });
+  image.onload = function () {
+    // Validasi ukuran width dan height
+    if (image.width >= 1200 && image.height >= 500) {
+      // Gambar memenuhi syarat, lanjutkan dengan pengiriman data
+      let form_data = new FormData();
+      form_data.append("title_give", title);
+      form_data.append("file_give", file);
+      form_data.append("layout_give", layout); // Menambahkan nilai layout ke formData
+
+      $.ajax({
+        type: "POST",
+        url: `/adminpanel/posting/${num}`,
+        data: form_data,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+          alert(response["msg"]);
+          window.location.reload();
+        },
+      });
+    } else {
+      alert("Ukuran gambar harus minimal 1200px lebar dan 500px tinggi");
+    }
+  };
+
+  image.onerror = function () {
+    alert(
+      "Gagal memuat gambar. Pastikan file yang dipilih adalah gambar yang valid."
+    );
+  };
 }
 
 function deletePost_detail(num) {
@@ -417,13 +438,17 @@ function post_users() {
 }
 
 function delete_users(num) {
-  $.ajax({
-    type: "POST",
-    url: "/delete-users",
-    data: { num_give: num },
-    success: function (response) {
-      alert(response["msg"]);
-      window.location.reload();
-    },
-  });
+  var confirmDelete = confirm("Apakah Anda yakin ingin menghapus user ini?");
+
+  if (confirmDelete) {
+    $.ajax({
+      type: "POST",
+      url: "/delete-users",
+      data: { num_give: num },
+      success: function (response) {
+        alert(response["msg"]);
+        window.location.reload();
+      },
+    });
+  }
 }

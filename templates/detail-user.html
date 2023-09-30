@@ -101,19 +101,25 @@
       </ol>
       <div class="container mt-4" id="cards-box">
         <div class="row">
-          {% for item in detail %} {% set colSize = item['layout'] or 12 %}
-          <div class="col-md-{{ colSize }} mb-4">
+          <div class="col-md-{{ post.layout }} mb-4">
             <img
-              class="img-fluid"
+              class="img-fluid photo-img"
+              src="{{ url_for('static', filename=post['file']) }}"
+              alt=""
+              height="100%"
+            />
+          </div>
+          {% for item in detail %}
+          <div class="col-md-{{ item.layout }} mb-4">
+            <img
+              class="img-fluid photo-img"
               src="{{ url_for('static', filename=item['file']) }}"
               alt=""
               height="100%"
             />
           </div>
-          {% if loop.index % 3 == 0 %} {# Tambahkan kondisi untuk setiap 3
-          elemen #}
+          {% endfor %}
         </div>
-        <div class="row">{% endif %} {% endfor %}</div>
       </div>
     </div>
 

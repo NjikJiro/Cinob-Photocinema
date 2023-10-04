@@ -12,15 +12,25 @@ import jwt
 from datetime import datetime, timedelta
 import hashlib
 import os
+from os.path import join, dirname
 import shutil
+
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+MONGODB_URI = os.environ.get("MONGODB_URI")
+DB_NAME = os.environ.get("DB_NAME")
+
+client = MongoClient(MONGODB_URI)
+db = client[DB_NAME]
+
 
 app = Flask(__name__)
 
 SECRET_KEY = 'CINEMA'
-
-client = MongoClient(
-    'mongodb+srv://ragdoll:smkm@cluster0.emf0knj.mongodb.net/?retryWrites=true&w=majority')
-db = client.cinobphotocinema
 
 TOKEN_KEY = 'mytoken'
 
@@ -460,7 +470,7 @@ def register_save():
         'username': username_receive,
         'password': password_hash,
         'num': num
-    } 
+    }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
 

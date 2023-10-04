@@ -1,5 +1,0 @@
-- masalah pada site
-1. pada halaman gallery detail, img detail masih kurang rapi(kasih class photo-img, 
-   dan jika img tidak full saat dikasih layout full landscpae maka ubah layout jadi landscpae aja jadi 1 baris 2 img)
-2. jika ada sebuah img detail tidak full saat dipakai layout full landscape maka ubah opsi jadi 1 baris ada 2 img
-3. memasukkan link-link pada footer

@@ -460,7 +460,7 @@ def register_save():
         'username': username_receive,
         'password': password_hash,
         'num': num
-    }
+    } 
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
 
